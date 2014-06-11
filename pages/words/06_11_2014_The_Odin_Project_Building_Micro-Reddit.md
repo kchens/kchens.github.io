@@ -10,6 +10,10 @@ Database Modeling:  A User model (User.rb) `has_many` Posts, a Post (Post.rb) `b
 
 ####The Hard
 
+Adding foreign keys is hard. I find that the easiest solution -- where the Post belongs to a User -- is this:
+
+*	*Implementation*: `rails g model Post user:references [add_column]:[data_type]`
+
 Keeping track of rails console. As the `create_posts.rb` migration references (has an index) the User model, this creates the `**:id** => 1`
 
 *	*Implementation:* `User.create(:username => "jackjohnson", :id => 1)`
