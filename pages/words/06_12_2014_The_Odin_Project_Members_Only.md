@@ -1,5 +1,7 @@
 *Note: I started blogging a while after completing this project. This is my attempt to relearn what I learned.*
 
+The Odin Project entices programmers to learn by copying popular, real-world start-ups. In this case, a gossip club. Here's what I learned:
+
 ####The Easy
 To check if the user submits the proper password, use the `#authenticate` in the `SessionsController#create`:
 
