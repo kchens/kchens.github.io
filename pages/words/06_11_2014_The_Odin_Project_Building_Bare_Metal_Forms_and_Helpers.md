@@ -15,6 +15,8 @@ This took a while to get. Essentially, the root path (facebook.com/[blank]) is w
 
 ####Tidbits
 *	While the `user.rb` model is singular, the `users_controller.rb` is plural. `rails g controller Users`.
+*	Two views (`erb` templates) can share similar `HTML` code. Simply need to create a file beginning with an underscore like so `_error_messages.html.erb`, then place this line of code accordingly: 
+	`<%= render 'shared/error_messages' %>`. As you may notice, the file must be designated  from and noted in the `shared` folder.
 
 ##HTML FORMS
 ####The Easy
@@ -34,13 +36,15 @@ In accessing the `user_params`, one way is something similar to the `rails conso
 
 To get rid of all the params calls, we can create a `private` `user_params` method. Then , use it like so:
 
-`def create
-    @user = User.new(user_params)
-end` 
-`private`   
-`def user_params
-	params.require(:user).permit(:username, :email, :password)
-end`
+	def create
+    	@user = User.new(user_params)
+	end` 
+	
+    private
+	
+    def user_params
+		params.require(:user).permit(:username, :email, :password)
+	end
 
 ####Tidbits
 
