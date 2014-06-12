@@ -1,5 +1,7 @@
+*Note: I started blogging a while after completing this project. This is my attempt to relearn what I learned.*
+
 ####The Easy
-To check if user submit the proper password, use the `#authenticate` in the `SessionsController#create`:
+To check if the user submits the proper password, use the `#authenticate` in the `SessionsController#create`:
 
 	if user && user.authenticate(params[:session][:password])
     .
@@ -25,7 +27,8 @@ Third, encrypt the token in a hash:
 
 Finally, use a `before_create` callback in the User model to `private`-ly create the remember token.
 
-	private
+	before_create :create_remember_token
+    private
 
 	def create_remember_token
     	self.remember_token = User.hash(User.new_remember_token)
@@ -41,7 +44,6 @@ Given the following, what does the `current_user=` method do?
     end
 	
 	def current_user
-	    #pulls token from browser, then hashes it
     	remember_token = User.hash(cookies[:remember_token])
 		@current_user ||= User.find_by(remember_token: remember_token)
     end	
@@ -70,7 +72,7 @@ To find a user based on an attribute, you can use `find_by` to access the `param
 
 * 	`user = User.find_by(email: params[:session][:email].downcase)`
     
-To create a link in a view -- one with the appropriate HTTP request -- `rake routes` to see the correct path:
+To create a link in a view -- one with the appropriate HTTP request -- `rake routes` to see the correct path (signout_path, here):
 
 *	`<%= link_to "Sign out", signout_path, method: "delete" %>`
 
