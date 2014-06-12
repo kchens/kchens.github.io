@@ -9,6 +9,6 @@ I started learning through [The Odin Project](http://theodinproject.com/) in **J
 
 1. **Building with Active Record**:   [Micro-Reddit](http://www.kevinkchen.com/2014/06/11/odin-micro-reddit/)
 2. **Forms**:  [Bare Metal Forms and Helpers](http://www.kevinkchen.com/2014/06/11/the-odin-project-bare-metal-forms-helpers/)
-3. **Authentication**: Members Only
+3. **Authentication**: [Members Only!](http://www.kevinkchen.com/2014/06/12/the-odin-project-members-only/)
 4. **Active Record Associations**: Private Events
 
