@@ -105,6 +105,9 @@ In Rails, one can type `rake routes` to find the name of the `create` path neede
 
 	has_many :attended_events, through: :event_relationships, source: :attended_event
 
+######camelcase & model names
+When generating a phrased-name model (Event Relationships), beware of the camelcase. While you can run `rails g model EventRelationships`, it will create a `event_relationships.rb` file (notice the underscore). However, through the code (like in `User.rb` or `Event.rb`), the model should be referenced as `event_relationships`. See above in the many-to-many relationship mapping notes for an example.
+
 ####Questions/Comments/Reminders
 ######`:event` vs `@event` for `form_for`
 When the `EventsController#new` doesn't create an `@events` variable, `:events` is used instead
