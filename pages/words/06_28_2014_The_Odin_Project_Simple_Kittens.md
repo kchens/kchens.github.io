@@ -1,9 +1,11 @@
+"The Odin Project: Simple Kittens" shows just how easy it is to create an API. All that's needed is to make sure the data responds to (*hint hint*) `JSON`. If you'd like to learn how to do this, skip to part two of this blog post.
 
+For now, let's rehash how to create forms and routes.
 
 ####1. Building HTML Application
 By this point, buliding an HTML form in Rails shouldn't be a problem. But because I've taken a few months hiatus, let's go through how to set up your controller, views, and partials.
 
-######`index`
+######Creating `index`
 Odin asks to display all the kittens created in the `index.html.erb` view. To do so, I need to save all the Kittens to a `@kittens` variable in the controller like so:
 
 	def index
@@ -76,7 +78,9 @@ Here's how your `create` action should look:
 It says, "If the new kitten (with the relevant parameters) can be saved, then I will redirect the user to that kitten's show path".
 
 ######Creating a `notice`/`success` message.
-In the code above, `notice:` flashes a message at the top of the page: IMAGE
+In the code above, `notice:` flashes a message at the top of the page:
+
+{<6>}![](http://kchens.github.io/images/OdinKittensFlash.png)
 
 And, the only thing you need to accomplish this is to simply specify the `notice`.
 
