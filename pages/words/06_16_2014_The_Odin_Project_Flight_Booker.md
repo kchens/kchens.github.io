@@ -35,7 +35,7 @@ Here is the completed `Airport.rb`
 ######Seeding your database
 Before we create the view to show the available flights to our customers, you need to create a database of flights. How do you do that? Well, go to your `db/seed.rb`.
 
-Inside this file, you'll need to first clear out to database -- just to make sure there are any lingering database objects. To do that, type `[model name].delete_all`.
+Inside this file, you'll need to first clear out the database -- just to make sure there aren't   any lingering database objects. To do that, type `[model name].delete_all`.
 
 Then, you can start creating flights and airports. Here is the full file:
 
@@ -109,7 +109,7 @@ With this, `@flights` in `Flight#index` now contains an array of flights that ma
 
 ######An aside on dates
 
-In the above code, the `on_date` method is used -- and with good reason. When the flights were seeded, the date attribute was recorded in this format:  `2014-06-28 02:25:56 -0400` or something similar. 
+In the above code, the `on_date` (a user-created) method is used -- and with good reason. When the flights were seeded, the date attribute was recorded in this format:  `2014-06-28 02:25:56 -0400` or something similar. 
 
 However, when the dates were displayed to the user, the date format changed to MM/DD/YYY.
 
@@ -119,6 +119,85 @@ So, to match that the original date format, the `on_date` method calls all objec
     	where(date: date_param.beginning_of_day..date_param.end_of_day)
 	end
 
+####Creating Tickets, Bookings, and Passenger Information
+######More models
+Once a passegner selects their preferred flight, we have to save that *booking* information somewhere. So, let's create a Booking model. There are two ways that you can think about how to set this up. 
+
+(1) You can look at the associations from the passenger's perspective. In this case, a passenger takes many flights. And, in order to take those flights, they have to have many reservations or bookings. That means:
+
+	class Passenger < ActiveRecord::Base
+    	has_many :flights, through: :bookings
+        has_many :bookings
+        
+        #If you are looking to issue tickets...
+        has_many :bookings, through: :tickets
+        has_many :tickets, foreigh_key: :passenger_id
+    end
+
+(2) Take the perspective of the flight. On a flight, there are many passengers. And, you know these passengers by the passenger's bookings.
+
+	class Flight < ActiveRecord::Base
+    	has_many :passengers, through: :bookings
+    	has_many :bookings, foreign_key: :flight_id
+    end
+
+Here, I added a `foreign_key` to the booking model. Otherwise, how would the flight know how to query for the flight information?
+
+Now, it should be relatively easy to set-up the Booking model. First, generate the Booking model with just one attribute, the foreign key:  `rails g Booking flight_id:integer`. 
+
+Next, let's think about associations. A booking has only *one* flight -- because, currently, the app only allows you to fly one way. However, a booking has many passengers because the app allows more than one person to be on the same booking.
+
+	class Booking < ActiveRecord::Base
+    	belongs_to :flight
+        has_many :passengers
+        
+        accepts_nested_attributes_for :passengers
+        
+        #If you are issuing tickets..
+        has_many :passengers, through: :tickets
+        has_many :tickets, foreign_key: :booking_id
+    end
+
+As a side note, you want to make sure that a Booking has access to the passenger's information. For this, we will use the `accepts_nested_attributes_for`. That way, the booking modle has access to the passenger's attributes (Say, when you type `Booking.first.passengers.first` into the `rails console`).
+######Setting up the Booking view
+At last, we can finally help the passengers input their booking information.
+
+Setting up the `new.html.erb`, let's use a `form_for` so you can input the passenger information into the Booking model's database. We type:  `<%= form_for(@booking) do |b| %>`
+
+As you want the booking model to be able to access the flight model, a `hidden_field` is necessary to send the booking the `flight_id`.	(To be extra sure that the value is saved you could type `<%= b.hidden_field :flight_id, value: @flight.id %>`)
+
+For now, the form should look like:
+
+	<%= form_for(@booking) do |b| %>
+	  <%= b.hidden_field :flight_id %>    
+      ..
+      <%= b.submit "Book Flight" %>
+	<% end %>  
+    
+To enter the passenger's information, I'll need to use a `fields_for`. One way to think about it is that the app will be writing to the Passenger model, through the Booking. As a result, the passenger information is *nested* inside the Booking model. You can get a better sense of this by looking at the whole form:
+
+	<%= form_for(@booking) do |b| %>
+    <%= b.hidden_field :flight_id %>    
+      <%= b.fields_for :passengers do |passenger_fields| %>
+        Name: <%= passenger_fields.text_field :name %>
+        Email: <%= passenger_fields.text_field :email %>
+        <br>
+      <% end %>
+    <%= b.submit "Book Flight" %>
+	<% end %>
+######Creating the right # of passenger fields
+
+In the above code, you want to make sure that there are enough passenger fields. Because if the customer is making a booking for 4 passegners, you want your app to show 4 passenger fields. The view's form is already prompted to display blank passenger fields, but this also needs to be done in the controller; the controller needs to create blank passenger instances.
+
+You can do this by using `.build`. This adds an object to the model, and also renders an empty record in the view. (In Rails 4, `.new` seems to do the same thing. See [here](http://stackoverflow.com/questions/17831812/build-vs-new-in-rails-4).)
+
+	class BookingsController < ApplicationController
+  	def new			  				
+        params[:passengers].to_i.times { @booking.passengers.build }
+	  end
+    end
+
+The above code, takes the number of passengers from the params hash, and then builds the multiple empty records for display in the view.
 ####Tidbits
 When using `belongs_to`, the following model should always be in the singular:
 
