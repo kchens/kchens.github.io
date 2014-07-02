@@ -9,7 +9,7 @@ Of course, maintenance is not the name of the game. Completing this project has 
 ####1. Creating a Search Form
 In the first part of building Flight Booker, I had to mimic the usual search form you might find at one of your regular search sights.
 
-{<1>}![Kevin_Chen_Odin_Flight_Search](http://kchens.github.io/images/Odin_Flight_Search_Final.png)
+![Kevin_Chen_Odin_Flight_Search](http://kchens.github.io/images/Odin_Flight_Search_Final.png)
 
 ######Setting up associations between the Airport and Flight models
 First off, you need to create your Airport and Flight model -- and the relevant associations. As Airports are the hubs where an airplane flies to and from, I think it's apt to say that `Airport` `has_many` `arriving_flights` and `departing_flights`.
