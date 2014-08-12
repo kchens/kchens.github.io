@@ -85,3 +85,11 @@ footer {
 #email {
   padding-top: 5px;
 }
+
+.post {
+  color: #828282;
+  width: 50%;
+  margin: 5px auto 5px auto;
+  font-weight: lighter;
+  text-align: left;
+}
