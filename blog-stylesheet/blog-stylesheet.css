@@ -86,6 +86,12 @@ footer {
   padding-top: 5px;
 }
 
+.date {
+  color: #828282;
+  font-weight: bold;
+  font-size: 18px;
+}
+
 .post {
   color: #828282;
   width: 50%;
