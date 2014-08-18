@@ -41,6 +41,10 @@ code {
   max-width: 10%
 }
 
+#full_pic {
+  max-width: 75%;
+}
+
 #name {
   font-weight: lighter;
   font-size: 50px;
@@ -49,13 +53,26 @@ code {
   margin-bottom: 30px;
 }
 
+.left {
+  width: 35%;
+  margin: 8%;
+  margin-left: 5%;
+  text-align: left;
+}
+
 .center {
   width: 35%;
-  margin: 5px auto 5px auto;
+  margin: 5px auto 50px auto;
+}
+
+.right {
+  left: 0%;
 }
 
 .about {
   position: relative;
+  margin-top: 4%;
+  text-align: left;
 }
 
 .subtitle {
@@ -63,6 +80,7 @@ code {
   font-weight: bold;
   margin: 50px 0 10px 0;
   font-size: 20px;
+  text-align: left;
 }
 
 body {
@@ -117,4 +135,14 @@ footer {
 .fixed_pos {
   max-width: 40%;
   display: inline-block;
+}
+
+.icon-alone {
+  display: inline-block; /* Chrome 19 was weird with clickability without this */
+}
+
+.screen-reader-text { /* Reusable, toolbox kind of class */
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
 }
