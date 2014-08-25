@@ -78,9 +78,10 @@ code {
 .subtitle {
   color: #000000;
   font-weight: bold;
-  margin: 50px 0 10px 0;
   font-size: 20px;
   text-align: left;
+  width: 48%;
+  margin: 3% auto 0% auto;
 }
 
 body {
@@ -114,12 +115,15 @@ footer {
   color: #828282;
   font-weight: bold;
   font-size: 18px;
+  width: 48%;
+  margin: 1% auto 0 auto;
+  text-align: left;
 }
 
 .post {
   color: #828282;
   width: 48%;
-  margin: 5px auto 5px auto;
+  margin: 3% auto 0% auto;
   font-weight: lighter;
   text-align: left;
 }
