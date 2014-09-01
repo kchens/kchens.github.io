@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title>Kevin K. Chen @ GitHub.io</title>
+  <link rel="stylesheet" type="text/css" href="../blog-stylesheet/blog-stylesheet.css">
+
+  <div id="header">
+    <li id="name"><img id="prof_pic" src="https://kchens.github.io/images/Kevin.png">KEVIN K CHEN.</li>
+  </div>
+</head>
+<body>
+  <li class="subtitle">words on "enumerable#group_by"</li>
+    <li class="date">august 31, 2014</a></li>
+    <div class="post">
+      <p>The <code>Enumerable#group_by</code> is a powerful method that can save you some headache sorting through your data. Here's how it works:</p>
+      <p><code>(input).group_by { block }</code></p>
+      <p>The <code>input</code> is what will be grouped. This can be a collection of strings or numbers inside an array or hash.</p>
+      <p>The <code>block</code> is the statement for how you will evaluate or group the input.</p>
+      <h4>Example #1:  Grouping strings</h4>
+      <p><code>strings = ("a".."z").group_by { |x| x == "a" || x == "b" }</code></p>
+      <p>OUTPUT: <samp>{true=>["a", "b"], false=>["c", "d", "e", "f", "g", "h", "i", "j", "k",... }</samp></p>
+      <p>The code returns a hash with two keys "true" and "false", which contain the defined arrays. We can then access the "true" and "false" arrays by <code>true_strings = strings[true]</code></p>
+      <h4>Example #2:  Grouping arrays</h4>
+      <p><code>int_arr = (1..10).group_by { |i| i / 2 }</code></p>
+      <p>OUTPUT: <samp>{0=>[1], 1=>[2, 3], 2=>[4, 5], 3=>[6, 7], 4=>[8, 9], 5=>[10]}</samp></p>
+      <p>The output here groups hashes into arrays depending on how many times 2 can go into each integer. So, <code>int_arr[3]</code> returns <code>[6, 7]</code>.</p>
+      <h4>Example #3:  Grouping hashes</h4>
+      <p><code>hash = { fat: "cat",
+        skinny: "hat",
+        free: "love",
+        happy:"mat"}
+      </code></p>
+      <p><code>a_hash = hash.group_by {|k,v| v.include?("a")}</code></p>
+      <p>Here, we are trying to group the hash by values that contain an "a". As a result, we get:</p>
+      <p>OUTPUT: <samp>{true=>[[:fat, "cat"], [:skinny, "hat"], [:happy, "mat"]],
+        false=>[[:free, "love"]]}</samp></p>
+      <p>So, <code>a_hash[true]</code> returns three a hash value that is an array of three arrays.</p>
+    </div>
+</body>
+
+<footer>
+  <li class="social"><a href="http://github.com/kchens">gh</a></li>
+  <li class="social"><a href="http://stackoverflow.com/users/3189405/kevinc">so</a></li>
+  <li class="social"><a href="http://twitter.com/kevkchen">tw </a></li>
+  <li class="social"><a href="http://www.linkedin.com/in/kevinkangchen">in</a></li>
+  <li class="social"><a href="http://www.facebook.com/kevin.kang.chen">fb </a></li>
+  <li id="email"><a href="mailto:kevin@kevinkchen.com">kevin@kevinkchen.com</a></li>
+</footer>
+</html>
