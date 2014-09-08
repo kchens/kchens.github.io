@@ -1,0 +1,110 @@
+<html>
+<head>
+  <title>Kevin K. Chen @ GitHub.io</title>
+  <link rel="stylesheet" type="text/css" href="../blog-stylesheet/blog-stylesheet.css">
+
+  <div id="header">
+    <li id="name"><img id="prof_pic" src="https://kchens.github.io/images/Kevin.png">KEVIN K CHEN.</li>
+  </div>
+</head>
+<body>
+  <li class="subtitle">words on "when to use classes"</li>
+    <li class="date">august 31, 2014</a></li>
+    <div class="post">
+      <p>Classes are daunting. With possibly hundreds of lines of code, it can be tough to wrap your head around them. Luckily, it's not <em>that</em> hard to figure them out.</p>
+      <h4>What are classes?</h4>
+        <ul>
+          <li>1. You can think of classes as a BIG method. With many other methods inside of it. (Really, they're objects that knows and does things)</li>
+          <li>2. Classes also have certain attributes, or properties, or things about them that make them <em>them</em>! You anc usually list these in the initialize method (explained later).</li>
+        </ul>
+        <ul>
+          <code>
+            class Puppies #a big method...
+              def initialize(color, tail_length)
+                ...
+              end
+
+              def bark #with a "mini" method
+                puts "RAWR"
+              end
+            end
+          </code>
+        </ul>
+        <p>Here, we have can see that this Dog has a mini method that allows dog's to bark. It also holds a collection of different attributes, like the dog's color (red, white, blue) and tail length (short, medium, long).</p>
+      <h4>Why use classes?</h4>
+      <ul>
+        <li>1. Sometimes, you want to create more than one dog. Classes are a way of organizing objects with similar attributes and methods, so you don't have to rewrite all the code over again.</li>
+        <code>
+          dog_1 = Puppies.new("blue", "short")
+          dog_2 = Puppies.new("red", "long")
+        </code>
+        <p>And, there we go. We have two class objects with the same general attributes and bark method. They're just a little different -- color-wise and tail-wise -- but otherwise they're just as loveable.</p>
+      </ul>
+
+      <h4>How to use classes</h4>
+      <ol>
+        <li>1. Initialize some attributes</li>
+          <code>
+            class Puppies
+              def initialize(color, tail_length)
+                @color = color
+                @tail_length = tail_length
+              end
+            end
+          </code>
+          <p>By storing the color of the dog (like "blue"), into the @color variable. The dog object now <em>knows</em> something about itself. Initializing helps the dog know things.</p>
+        <li>2. Make some instance methods to help the class <em>do</em> things</li>
+          <code>
+            class Puppies
+              ...
+
+              def bark
+                puts "RAWR" + " I'm a dog dammit."
+              end
+            end
+
+            dog_1 = Puppies.new("blue", "short")
+            dog_1.bark
+            ## <i>"RAWR I'md a dog dammit."</i>
+          </code>
+        <li>3. Access instance variables with the proper scope.</li>
+          <code>
+            class Puppies
+              ...
+
+              def bark
+                puts "RAWR" + " I'm a #{@color} dog dammit."
+                @noise = "loud"
+              end
+
+              #the following won't work
+              def wrong_sleep
+                puts "I'm tired of making such " + @noise " noise."
+              end
+
+              #so you have to write
+              def correct_sleep
+                puts "I'm going to sleep and dream of #{@color}."
+              end
+            end
+
+            dog_1.bark
+            dog_1.correct_sleep
+            ## <i>"RAWR I'm a blue dog dammit."</i>
+            ## <i>"I'm going to sleep and dream of blue."</i>
+          </code>
+          <p>Here, bark and correct_sleep properly dispalys the color of the dog, along with the string. However, wrong_sleep doesn't work. Why? Scoping</p>
+          <p>Bark and correct_sleep can access the @color blue because the Puppies' initialize class basically sets a default instance variables that any method can access. However, wrong_sleep can't access the @noise because @noise is only available/alive/exists within the bark method.</p>
+      </ol>
+    </div>
+</body>
+
+<footer>
+  <li class="social"><a href="http://github.com/kchens">gh</a></li>
+  <li class="social"><a href="http://stackoverflow.com/users/3189405/kevinc">so</a></li>
+  <li class="social"><a href="http://twitter.com/kevkchen">tw </a></li>
+  <li class="social"><a href="http://www.linkedin.com/in/kevinkangchen">in</a></li>
+  <li class="social"><a href="http://www.facebook.com/kevin.kang.chen">fb </a></li>
+  <li id="email"><a href="mailto:kevin@kevinkchen.com">kevin@kevinkchen.com</a></li>
+</footer>
+</html>
