@@ -65,7 +65,7 @@
 
             dog_1 = Puppies.new("blue", "short")
             dog_1.bark
-            ## <i>"RAWR I'md a dog dammit."</i>
+            ## <i>"RAWR I'm a dog dammit."</i>
           </code>
         <li>3. Access instance variables with the proper scope.</li>
           <code>
@@ -79,7 +79,7 @@
 
               #the following won't work
               def wrong_sleep
-                puts "I'm tired of making such " + @noise " noise."
+                puts "I'm tired of making such " + @noise + " noise."
               end
 
               #so you have to write
@@ -94,7 +94,7 @@
             ## <i>"I'm going to sleep and dream of blue."</i>
           </code>
           <p>Here, bark and correct_sleep properly dispalys the color of the dog, along with the string. However, wrong_sleep doesn't work. Why? Scoping</p>
-          <p>Bark and correct_sleep can access the @color blue because the Puppies' initialize class basically sets a default instance variables that any method can access. However, wrong_sleep can't access the @noise because @noise is only available/alive/exists within the bark method.</p>
+          <p>Bark and correct_sleep can access the @color blue because the Puppies' initialize class basically sets a default instance variables that any method can access. However, #wrong_sleep can't access the @noise because @noise is only available/alive/exists within the bark method. That said, if you call #bark first -- @noise will equal "loud" -- and you can correctly call #wrong_sleep.</p>
       </ol>
     </div>
 </body>

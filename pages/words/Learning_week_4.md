@@ -6,6 +6,8 @@
 ### Practice
 Practice enhances the neurons' development of the new technique and strengthens the connections between new areas of the brain. 
 
+Set-up the problem, but you don't necessarily need to do the algebra -- you don't learn anything from that.
+
 ###Teamwork
 By making it a point to do some of your studying with friends, they can act as a external diffuse mode that analyzes how you're thinking about a problem.
 
@@ -26,3 +28,10 @@ Mathematician Keith Devlin:  He has never figured something out by sitting at a 
 
 ###Fighting Procrastination:  Willpower on the write cue
 You don't need a lot of will power, you just need it at the right time. 
+
+###ADEPT Method for learning new ideas
+Analogy
+Diagram
+Examples
+Plain English
+Technical definition
