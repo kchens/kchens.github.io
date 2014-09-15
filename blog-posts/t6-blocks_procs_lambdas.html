@@ -1,0 +1,113 @@
+<html>
+<head>
+  <title>Kevin K. Chen @ GitHub.io</title>
+  <link rel="stylesheet" type="text/css" href="../blog-stylesheet/blog-stylesheet.css">
+
+  <div id="header">
+    <li id="name"><img id="prof_pic" src="https://kchens.github.io/images/Kevin.png">KEVIN K CHEN.</li>
+  </div>
+</head>
+<body>
+  <li class="subtitle">words on "blocks, procs, lambdas"</li>
+    <li class="date">september 15, 2014</a></li>
+    <div class="post">
+      <p>No matter how many times I come across blocks, procs, and lambdas, I still remember a jumbled mess. In this post, we'll look at when and why you might want to use each concept.</p>
+      <h4>Blocks</h4>
+        <h5>Use a block when you want a <em>flexible</em> way to interact with a method, when you don't want to create multiple methods that are <em>similar</em>.</h5>
+        <p>Say we have a class Array, and we want that same array -- just with every element doubled AND tripled. Well, we could write separate methods #doubled and #tripled. Alternatively, we can use a block.</p>
+        <code>
+          class Array
+            def iterate!(&code) # (1) let the method take a block by starting with an ampersand
+              self.each_with_index do |val, idx|
+                self[idx] = code.call(val) # (2) pass the control to the block with #call
+              end
+            end
+          end
+
+          array = [1,2,3,4]
+
+          p array.iterate! { |val| val * 2 } # (3) between '{}' is our block
+          # => [2,4,6,8]
+
+          p array.iterate! { |val| val * 3 }
+          # => [3,6,9,12]
+        </code>
+        <p>By using block calls correctly in line 28 and 31, we can get the same result as we would have thorugh a #doubled or #tripled method.</p>
+      <h4>Procs</h4>
+        <h5>Use a Proc when you plan call the same block multiple times -- don't copy and paste the block! And/or when you plan to use more than one block of code within a method's argument</h5>
+        <p>It helps to think of a Proc as just <em>naming</em> the block. However, there are some differences:</p>
+        <code>
+          class Array
+            def iterate!(code) # (1) Procs are just like any data type (Proc is a class after all), so no ampersand needed
+              self.each_with_index do |val, idx|
+                self[idx] = code.call(val) # (2) pass the control to the Proc with #call
+              end
+            end
+          end
+
+          array_1 = [1,2,3,4]
+          array_2 = [2,4,6,8]
+          square = Proc.new { |n| n**2 }
+
+          p array_1.iterate!(square)
+          # => [1, 4, 9, 16]
+          p array_2.iterate!(square)
+          # => [4, 16, 36, 64]
+        </code>
+        <p>The real reason (and power) of Procs however are when you want to pass more than one Proc to a method.</p>
+        <code>
+          def in_n_out(procs)
+            procs[:in].call
+            puts "..second proc.."
+            procs[:out].call
+          end
+
+          in_n_out(:in => Proc.new { puts "Getting a burger.." },
+                   :out => Proc.new { puts "..finished." })
+
+          # => Getting a burger..
+          # => ..second proc..
+          # => ..finished.
+        </code>
+      <h4>Lambdas</h4>
+        <h5>Use lambdas when you want to ensure you have the right number of arguments passed. Use lambdas for "diminuitive returns".</h5>
+        <p>When running a Proc with several arguments, a Proc will return any statement. Meanwhile, lambdas will raise an error.</p>
+        <code>
+          def should_error(code)
+            burgers = "juicy"
+            fries = "crunchy"
+            code.call(burgers, fries)
+          end
+
+          should_error( Proc.new { |a, b, c| puts "I love the #{a} burgers and #{b} fries and #{c} drinks."} )
+          # => "I love the juicy burgers and crunchy fries and  drinks."
+
+          should_error(lambda { |a, b, c| puts "I love the #{a} burgers and #{b} fries and #{c} drinks."} )
+          # => ArgumentError: wrong number of arguments (2 for 3)
+        </code>
+        <p>When using a Proc with a return statement, Procs will stop the method. Meanwhile, lambdas will return the value, then pass control back to the method. This is because Procs are "drop in" code snippets, while lambdas are methods -- just "anonymous" ones.</p>
+        <code>
+          def return_order(code)
+            burgers = "juicy"
+            code.call(burgers)
+            return "Here are your fries."
+          end
+
+          return_order( Proc.new { |a| return "Here is your #{a} burger." } )
+          # => LocalJumpError: unexpected return
+          return_order( lambda { |a| return "Oh, you only ordered fries?" } )
+          # => "Here are your fries."
+        </code>
+        <p><i>I want to thank Robert Sosinski for his excellent post on <b><a href="http://www.reactive.io/tips/2008/12/21/understanding-ruby-blocks-procs-and-lambdas/">Understanding Ruby Blocks, Procs and Lambdas</a></b>.</i></p>
+    </div>
+</body>
+
+<footer>
+  <li class="social"><a href="http://github.com/kchens">gh</a></li>
+  <li class="social"><a href="http://stackoverflow.com/users/3189405/kevinc">so</a></li>
+  <li class="social"><a href="http://twitter.com/kevkchen">tw </a></li>
+  <li class="social"><a href="http://www.linkedin.com/in/kevinkangchen">in</a></li>
+  <li class="social"><a href="http://www.facebook.com/kevin.kang.chen">fb </a></li>
+  <li id="email"><a href="mailto:kevin@kevinkchen.com">kevin@kevinkchen.com</a></li>
+</footer>
+</html>
