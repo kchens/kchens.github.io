@@ -1,0 +1,62 @@
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="../stylesheets/normalize.css">
+  <title>Ruby Enumerable Cheatsheet</title>
+
+</head>
+
+<div id="left">
+  <header>
+    <img src="../../images/RubyCheatSheet.png">
+    <nav>
+      <a href="#each">#each</a>
+      <a href="#map">#map</a>
+      <a href="#select">#select</a>
+      <a href="#inject">#inject</a>
+    </nav>
+  </header>
+</div>
+
+<body>
+  <div id="content">
+  <article id="each">
+    <h2>#each</h2>
+    <p><code>each</code> iterates through each element in a data structure. By adding a block, you can specify what changes are made to each element</p>
+    <div class="example">
+      <code>scrambling_phone_number = [7, 0, 3, 5, 5, 5, 5, 5, 5, 5]</code><br>
+      <code>scrambling_phone_number.each { |num| print rand(1..num)}</code><br>
+      <code> # => 434112215 </code>
+    </div>
+  </article>
+  <article id="map">
+    <h2>#map</h2>
+    <p><code>map</code> is identical to <code>each</code>. The only difference is that map forever changes the data structure it is called on.</p>
+    <div class="example">
+      <code>scrambling_phone_number.map { |num| num / 3 }</code><br>
+      <code> # => [2, 0, 1, 1, 1, 1, 1, 1, 1, 1] </code><br>
+    </div>
+  </article>
+  <article id="select">
+    <h2>#select</h2>
+    <p><code>select</code> iterates through the elements in a data structure, but returns an array of elements that fit conditions you've specified.</p>
+    <div class="example">
+      <code>area_code = scrambling_phone_number.select { |num| num != 5 } </code><br>
+      <code># => [7, 0, 3] </code><br>
+    </div>
+  </article>
+  <article id="inject">
+    <h2>#inject</h2>
+    <p><code>inject</code> returns the sum of or product of all numbers in a data structure. It can add or multiple an extra number (ex: 5)</p>
+    <div class="example">
+      <code>sum = scrambling_phone_number.inject(0) { |total, num| total += num }</code><br>
+      <code># => 45</code><br>
+      <code></code><br>
+      <code>sum = scrambling_phone_number.inject(5) { |total, num| total += num }</code><br>
+      <code># => 50</code><br>
+    </div>
+  </article>
+  </div>
+</body>
+</html>
