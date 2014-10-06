@@ -1,0 +1,34 @@
+---
+layout: post
+title: age discrimination in tech
+---
+
+{{ page.title }}
+================
+
+<p class="meta">31 August 2014 - Burke, VA
+
+*This is a work in progress*
+Hair white at 50, my father dyed his hair for over a decade. Every few months, he'd take the his little white rice bowl, pour the powder, mix the chemical into dark paste. He'd prep his hair -- wet the ridges perfect like farming steppes -- slather the paste on, and let his hair set for double the time instructed. Something around an hour. An hour to have that black burn into his hair.
+
+But that's the trade he made back in the late 90s. With four kids to support and poor English, he considered himself lucky. He found a great position at the #1 Aerospace Engineering Firm in the world -- with benefits! But, he had to transition from management to a front-line software engineer. With poor English and little desire to manage at a bigger firm, he believed he'd be happy resigning himself to a position that demanded the most up-to-date skills.
+ 
+But he knew he was smart and hardworking. He postponed the start date of his position to learn a new programming language required for his job. In one month, he read that book back-to-back three times. With his hard work, he knew there were few reasons he'd ever be fired. The only one that came to mind was that he might be too old.
+
+As Life would have it, neither skills or hair dye could black out the ink on paper:  He was pushing, then pushed passed 65. Retirement age.
+ 
+"Are you thinking about retirement?" the manager asked. Of course, he had. Everyone has. My dad didn't respond, but 67 was the number.
+
+But just a few months later, in August 2014, he was let go. Part of "business conditions". Apparently, business conditions were so bad the company outbeat the S&P500 by 2x to date.
+
+ That's the logic of business though. When you're judging someone by so-called [measureable](http://www.newrepublic.com/article/117088/silicons-valleys-brutal-ageism) standards of meritocracy and *unmeasureable* standards of culture, it's easy to imply that you're contributing negatively to business conditions. Despite the fact that you may have trained fresh grads who would later become your managers, despite the fact that you have all this network knowledge that could help the firm become a wiser, smarter organization, it doesn't matter if you're not immediately useful. If you don't seem to put in as many hours as the next person.
+
+But that's just what is probably 
+
+Whether it's Silicon Valley or the greater engineering world at large, there are benefits to reap from old hands like my father. To quote *The New Republic*:
+
+*"Ben Hammersley, a programmer and author who has advised the British government on creating a technology hub in London, points out that the incremental model largely explains Germany's economic strength. "The majority of the German economy is light engineering. It's family-owned businesses engaged in long-term planning," he says. "'We're going to be around for another hundred years. What can we do to make a five percent improvement every year?'" By contrast, he says, economies that embrace the Silicon Valley model writ large--throwing massive amounts of money at highly speculative investments--are suspiciously bubble-prone."*
+
+But that's what Silicon Valley and the larger engineering and business world want: Disruption. Massive disruption that reaps massive profits. And they don't think that older engineers can deliver on that. Yet, while older engineers might not fit the typical mold of a "innovative" person, they have far more internal knowledge of how technical systems have worked in the past. And, not repeating mistakes for years or decades ago is important to moving forward.
+
+Instead of laying off and firing engineers after they are "over-the-hill", I recommend putting in place transition program for engineers where "wise" ones can mentor workers of all ages and throughout all departments. In effect, these engineers would become advocates of the engineering culture across the whole business.
