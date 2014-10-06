@@ -1,0 +1,152 @@
+html {
+  color: #FF6600;
+  font-family: helvetica;
+  font-size: 20;
+  background-color: #F6F6EF;
+}
+
+a {
+  color: #828282;
+  text-decoration: none;
+}
+
+a:hover {
+    color: #FF6600;
+}
+
+li {
+  list-style: none;
+}
+
+code {
+  white-space: pre;
+  background-color: #FFFFFF;
+}
+
+.hline {
+  border: 1px solid #000000;
+  border-bottom: 0px;
+  border-right: 0px;
+  border-left: 0px;
+  margin: 30px;
+}
+
+#header {
+  font-weight: lighter;
+  position: relative;
+  text-align: center;
+}
+
+#prof_pic  {
+  max-width: 10%
+}
+
+#full_pic {
+  max-width: 75%;
+}
+
+#name {
+  font-weight: lighter;
+  font-size: 50px;
+  border-bottom: 2px solid gray;
+  background-color: #F3F6FC;
+  margin-bottom: 30px;
+}
+
+.left {
+  width: 35%;
+  margin: 8%;
+  margin-left: 5%;
+  text-align: left;
+}
+
+.center {
+  width: 35%;
+  margin: 5px auto 50px auto;
+}
+
+.right {
+  left: 0%;
+}
+
+.about {
+  position: relative;
+  margin-top: 4%;
+  text-align: left;
+}
+
+.subtitle {
+  color: #000000;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: left;
+  width: 48%;
+  margin: 3% auto 0% auto;
+}
+
+body {
+  position: relative;
+  text-align: center;
+}
+
+footer {
+  clear: both;
+  position: relative;
+  top: 100px;
+  text-align: center;
+  border: 1px solid #000000;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  padding: 5px;
+}
+
+.social {
+  display: inline-block;
+  border: 1px solid #FF6600;
+  padding: 10px;
+}
+
+#email {
+  padding-top: 5px;
+}
+
+.date {
+  color: #828282;
+  font-weight: bold;
+  font-size: 18px;
+  width: 48%;
+  margin: 1% auto 0 auto;
+  text-align: left;
+}
+
+.post {
+  color: #828282;
+  width: 48%;
+  margin: 3% auto 0% auto;
+  font-weight: lighter;
+  text-align: left;
+}
+
+.post_idx {
+  color: #828282;
+  width: 100%;
+  margin: 20px auto 20px auto;
+  font-weight: lighter;
+  text-align: left;
+}
+
+.fixed_pos {
+  max-width: 40%;
+  display: inline-block;
+}
+
+.icon-alone {
+  display: inline-block; /* Chrome 19 was weird with clickability without this */
+}
+
+.screen-reader-text { /* Reusable, toolbox kind of class */
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}

@@ -1,0 +1,82 @@
+a {
+  color: #000000;
+  text-decoration: none;
+}
+
+a:hover {
+  background-color: #FFFFFF;
+  color: #87CEFA;
+}
+
+footer {
+  margin-left: 73%;
+}
+h3 {
+  margin-top: 0%;
+  margin-bottom: 0%;
+}
+
+.headitem {
+  display: inline-block;
+}
+
+html {
+  background-color: #87CEFA;
+  font-family: Baskerville;
+}
+#importance{
+  margin-left: 10%;
+  margin-right: 10%
+}
+
+.italic {
+  font-style: italic;
+}
+
+#git {
+  border: 2px solid black;
+}
+.kevin {
+  margin-left: 15%;
+  display: inline-block;
+  width: 30%;
+}
+
+#line1 {
+  border-top: 5px solid black;
+}
+
+#line2 {
+  border-top: 5px solid black;
+  margin-top: 20px;
+}
+
+.michael {
+  display:inline-block;
+  width: 30%;
+}
+
+.titles {
+    padding-bottom: 0%;
+  }
+
+img {
+  max-width: 30%;
+}
+h1 {
+  max-width: 38%;
+  font-size: 30px;
+}
+header {
+  padding-left: 10px;
+  padding-top: 10px;
+  width: 100%;
+}
+ul  {
+  margin: 0%;
+}
+#reflection {
+  font-style: italic;
+  margin-left: 10%;
+  margin-right: 10%
+}

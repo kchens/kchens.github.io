@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   <title>Kevin Kang Chen</title>
+   <title>switching to jekyll</title>
    <meta name="author" content="Kevin Kang Chen" />
 
    <!-- SET RSS FEED -->
@@ -33,11 +33,42 @@ var WRInitTime=(new Date()).getTime();
     <a class="extra" href="/">home</a>
   </div>
 
-  <div id="home">
-  <h1>words</h1>
+  <div id="post">
+<h1>switching to jekyll</h1>
+
+<p class="meta">10 October 2014 - San Francisco, CA</p>
+
+
+<p>In creating my own blog, the most upsetting thing for me was that I had to start the css from scratch. Moreover, I wouldn't be able to save my content separate from the HTML file. Now, with Jekyll I can do that and much more.</p>
+
+<p>I first came across Jekyll four months ago, but opted to use the Ghost blogging platform because I would have online access to a markdown editor. It was a great choice at the time -- Ghost got me addicted to writing in markdown.</p>
+
+<p>In starting to blog for Dev Bootcamp, the thing I found most frustrating was that I had to specify dates, titles, and css multiple times over different HTML files (like specifying the date on the <code>index.html</code> and <code>post.html</code>). What a massive waste of time.</p>
+
+<p>With Jekyll, I now have the benefits of ruby inside the HTML to save time. Currently, this markdown file <code>post.md</code> has the following head:</p>
+
+<pre><code>---
+layout: post
+title: switching to jekyll
+---
+
+switching to jekyll
+================
+
+&lt;p class="meta"&gt;10 October 2014 - San Francisco, CA&lt;/p&gt;
+</code></pre>
+
+<p>Now, if I want to the title to display across within the post and the homepage, I specify it in the <code>title: (POST TITLE HERE)</code>. Then, it gets displayed in <code>switching to jekyll</code>.</p>
+
+<p>Likewise, given the way that the Jekyll files are set-up, the date is similarly displayed when entered here: <code>&lt;p class="meta"&gt; (DATE HERE) &lt;/p&gt;</code></p>
+
+<p>This is just one level of separation. We also have</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
   <ul class="posts">
-    
-      <li><span>05 Oct 2014</span> &raquo; <a href="/2014/10/05/switched-to-jekyll.html">switching to jekyll</a></li>
     
       <li><span>31 Aug 2014</span> &raquo; <a href="/2014/08/31/tech-age-discrimination.html">age discrimination in tech</a></li>
     
@@ -45,31 +76,8 @@ var WRInitTime=(new Date()).getTime();
     
       <li><span>11 Aug 2014</span> &raquo; <a href="/2014/08/11/website-design-thoughts.html">website design</a></li>
     
-      <li><span>11 Aug 2014</span> &raquo; <a href="/2014/08/11/chefs-kitchen.html">chefs kitchen</a></li>
-    
   </ul>
-
-  <h1>projects</h1>
-  <ul class="posts">
-    
-  </ul>
-
-<!--   <h1>Highlighted Media</h1>
-  <ul class="posts">
-    <li><span>02 Sep 2013</span> &raquo; <a href="http://www.wired.com/wiredenterprise/2013/09/github-for-anything/all/">Article: WIRED - GitHub Is Going Mainstream</a></li>
-  </ul>
-
-  <h1>Other Interviews, Talks, Etc</h1>
-  <ul class="posts">
-    <li><span>12 Sep 2013</span> &raquo; <a href="http://www.youtube.com/watch?v=k2vJNNAQZlg">Video: Fox Business News interview</a></li>
-  </ul>
-
-  <h1>Prominent Open Source Projects</h1>
-  <ul class="posts">
-    <li><a href="http://github.com/github/gollum/">Gollum:</a> A simple, Git-powered wiki with a sweet API and local frontend.</li>
-  </ul> -->
 </div>
-
 
   <div class="footer">
     <div class="contact">

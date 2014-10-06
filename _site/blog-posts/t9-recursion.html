@@ -1,0 +1,61 @@
+<html>
+<head>
+  <title>Kevin K. Chen @ GitHub.io</title>
+  <link rel="stylesheet" type="text/css" href="../blog-stylesheet/blog-stylesheet.css">
+
+  <div id="header">
+    <li id="name"><img id="prof_pic" src="../images/Kevin.png">KEVIN K CHEN.</li>
+  </div>
+</head>
+<body>
+  <li class="subtitle">words on "computer memory"</li>
+    <li class="date">september 28, 2014</a></li>
+    <div class="post">
+      <p>Recursion is hard. Some call it a <a href="http://ruby.bastardsbook.com/chapters/recursion/">"litmus test that separates decent programmers from terrible ones."</a> Here's what you need to know to get closer to the "decent" end of programming.</p>
+      <h4>Recursion in Everyday Life</h4>
+      <img src="../images/RecursionWindow.jpeg">
+      <p>If you've ever video chatted, you've probably encountered a screen similar to the one above. Your screen is displayed over and over again. Why?</p>
+      <p>It comes back to <em>procedure</em>. Given that both users are screensharing, your display is simply following that one rule. Share your screen, which shows the video chat window, in which your friend shows the video chat window, in which shows your video chat...</p>
+      <p>You get the picture? This is infinite recursion.</p>
+      <h4>Recursion in Programming: Two Principles</h4>
+      <p>Infinite recursion happens in programming too, but it's of no use. When programming, we're hoping not to only repeat a <b>(1) procedure that repeats itself</b>, but to get to an end, a solution, a <b>(2) base case.</b></p>
+      <p>In working with code, let's look at hat lengths to find the largest hat <a href="http://ruby.bastardsbook.com/chapters/recursion/">(rocks, unfortunately has already been done).</a></p>
+      <code>
+        hats = 10.times.map{rand(200) + 1}
+        <i> # => [112, 189, 20, 134, 65, 165, 125, 30, 38, 178]</i>
+        big_hat = 0
+
+        hats.each {|hat| big_hat = hat if big_hat < hat }
+      </code>
+      <p>Recursion doesn't need a loop. Instead, we're going to create a function and call it within itself. To do this, it helps to first think of the pseudocode. Specifically, (a) we want to take an array of values, (b1) if the array has two values or fewer, return the largest value, (b2) if there are more than two values, split the array into two arrays again...</p>
+      <p>...but then, we'd have to go through the same <em>procedure</em>. Eventually, we'll have to split this array in half, again. Should we manually split the array again with a ruby enumerable, then copy and paste the code over and over? That's not necessary. As noted in the beginning, we can call the function within the function.</p>
+      <code>
+        def hat_measure(hats)
+          if hats.length <= 2  # the base case
+            a = hats[0]
+            b = hats[-1]
+          else
+            a = hat_measure(hats.slice!(0,hats.length/2))
+            b = hat_measure(hats)
+          end
+
+          return a > b ? a : b
+        end
+
+        hat_measure(hats)
+        # => 189
+      </code>
+      <p>As the goal of hats_measure was to keep divide the array into smaller and smaller piles, you can see how the base case is when the array is only a length of 2.</p>
+      <p>Now that we have some clue of what recursion is, here's the thing:  real-world, programming examples are few. Loops can do the same thing as a recursive algorithm. Sometimes, loops can achieve the solution even faster. But, recursion can have its performance merits. You'll just have to test it out.</p>
+    </div>
+</body>
+
+<footer>
+  <li class="social"><a href="http://github.com/kchens">gh</a></li>
+  <li class="social"><a href="http://stackoverflow.com/users/3189405/kevinc">so</a></li>
+  <li class="social"><a href="http://twitter.com/kevkchen">tw </a></li>
+  <li class="social"><a href="http://www.linkedin.com/in/kevinkangchen">in</a></li>
+  <li class="social"><a href="http://www.facebook.com/kevin.kang.chen">fb </a></li>
+  <li id="email"><a href="mailto:kevin@kevinkchen.com">kevin@kevinkchen.com</a></li>
+</footer>
+</html>

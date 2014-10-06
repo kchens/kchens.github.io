@@ -4,13 +4,50 @@
  <title>Kevin Kang Chen</title>
  <link href="http://kchens.github.com/atom.xml" rel="self"/>
  <link href="http://kchens.github.com/"/>
- <updated>2014-10-05T21:12:45-07:00</updated>
+ <updated>2014-10-05T22:00:11-07:00</updated>
  <id>http://kchens.github.com/</id>
  <author>
    <name>Kevin Kang Chen</name>
    <email>kevin (dot) kang (dot) chen (a) gmail (dot) com</email>
  </author>
 
+ 
+ <entry>
+   <title>switching to jekyll</title>
+   <link href="http://kchens.github.com/2014/10/05/switched-to-jekyll.html"/>
+   <updated>2014-10-05T00:00:00-07:00</updated>
+   <id>http://kchens.github.com/2014/10/05/switched-to-jekyll</id>
+   <content type="html">&lt;h1&gt;switching to jekyll&lt;/h1&gt;
+
+&lt;p class=&quot;meta&quot;&gt;10 October 2014 - San Francisco, CA&lt;/p&gt;
+
+
+&lt;p&gt;In creating my own blog, the most upsetting thing for me was that I had to start the css from scratch. Moreover, I wouldn&#39;t be able to save my content separate from the HTML file. Now, with Jekyll I can do that and much more.&lt;/p&gt;
+
+&lt;p&gt;I first came across Jekyll four months ago, but opted to use the Ghost blogging platform because I would have online access to a markdown editor. It was a great choice at the time -- Ghost got me addicted to writing in markdown.&lt;/p&gt;
+
+&lt;p&gt;In starting to blog for Dev Bootcamp, the thing I found most frustrating was that I had to specify dates, titles, and css multiple times over different HTML files (like specifying the date on the &lt;code&gt;index.html&lt;/code&gt; and &lt;code&gt;post.html&lt;/code&gt;). What a massive waste of time.&lt;/p&gt;
+
+&lt;p&gt;With Jekyll, I now have the benefits of ruby inside the HTML to save time. Currently, this markdown file &lt;code&gt;post.md&lt;/code&gt; has the following head:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;---
+layout: post
+title: switching to jekyll
+---
+
+switching to jekyll
+================
+
+&amp;lt;p class=&quot;meta&quot;&amp;gt;10 October 2014 - San Francisco, CA&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, if I want to the title to display across within the post and the homepage, I specify it in the &lt;code&gt;title: (POST TITLE HERE)&lt;/code&gt;. Then, it gets displayed in &lt;code&gt;switching to jekyll&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Likewise, given the way that the Jekyll files are set-up, the date is similarly displayed when entered here: &lt;code&gt;&amp;lt;p class=&quot;meta&quot;&amp;gt; (DATE HERE) &amp;lt;/p&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;This is just one level of separation. We also have&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>age discrimination in tech</title>
