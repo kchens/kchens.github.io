@@ -30,7 +30,7 @@ Imagine trying to answer this question:
 *
 Doesn't make much sense right? When examples are provided, the question make much more sense. (Try reading through the post, THEN re-read the question.
 
-![](../images/RightQuestions.png)
+![](../_site/images/RightQuestions.png)
 
 As you can see, I give an example of what I am trying to solve in "proposed_solution". That works. But then, the second block of code - which is seemingly similar -- doesn't seem to work at all.
 
