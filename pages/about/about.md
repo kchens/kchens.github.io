@@ -11,11 +11,12 @@
 		<li><a href="http://twitter.com/kevkchen" target="_blank">Twitter</a></li>
 		<li><a href="http://stackoverflow.com/users/3189405/kevinc" target="_blank">Stack Overflow</a></li>
 		<li><a href="http://www.facebook.com/kevin.kang.chen" target="_blank">Facebook</a></li>
+        <li><a href="http://www.theodinproject.com/users/267" target="_blank">The Odin Project</a></li>
 		<li>Skype: kkch3n</li>
 		<li>kevin[at]kevinkchen[dot]com</li>
 	</ul>
 </div>
 
 <div class="large-6 medium-6 small-12 columns cr-pside-pad" style="padding-right: 0px !important">
-![](http://kchens.github.io/images/Kevin.JPG)
+{<1>}![](http://kchens.github.io/images/Kevin.JPG)
 </div>

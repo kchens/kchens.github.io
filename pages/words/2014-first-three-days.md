@@ -173,7 +173,7 @@ Seriously, write it out.
 #Personally...
 I'm warming up to Dev Bootcamp.
 
-#Thursday - 10/8:  
+#Thursday - 10/9:  
 #Part 2: When To Make Variables `private`
 
 Today's Highlight:  Instance Variables are *Automatically* private to a Class.
@@ -227,7 +227,7 @@ However, this is unnecessary and tedious for most programs. Generally, you can l
 I'm liking Dev Bootcamp more and more. 
 
 
-#Friday - 10/8
+#Friday - 10/10
 #Programming Sudoku (with Sudocode)
 
 Today, my pair Kiope and I doubled down on *going slow* with Pseudocode and Test-Driven Development. 
@@ -236,7 +236,7 @@ It took us almost two hours to write a full draft of Pseudocode with properly na
 
 Moreover, TDD made it feel like we were in control. Instead of coding up a monster method, TDD forced us to breakdown our method into the smallest component parts. Not only were the methods then easier to debug, but TDD helped us get into a state of *flow* -- and avoid a state of frustration.
 
-#Friday - 10/8:  
+#Friday - 10/10:  
 #Recursion
 Today's Highlight:  Recursion is a like a Escher Staircase -- just with a "Stop Sign"
 
@@ -522,7 +522,7 @@ It's days like today that I appreciate that Dev Bootcamp provides free yoga. It 
 
 Moreover, I appreciate that Sherif planned out this Thursday as more of a talking day. Tom and I designed databases on a white board. We actually only spent about an hour or so coding up a database -- just enough to get a practical understanding of the topic.
 
-#Friday - 10/16:  
+#Friday - 10/17:  
 #MVC w/Groups
 
 Today's Highlight:  Working With Groups is Tough
@@ -592,7 +592,7 @@ While Week 2 and Week 3 so far has been good in honing down the basics of MVC an
 
 For now though, I think I'll take Sefora's advice. Dev Bootcamp is short -- I should be with it for now. Don't worry about taking a few months off applying to Hacker School. Just get the most out of Dev Bootcamp for now.
 
-#Wednesday - 10/21:  
+#Wednesday - 10/22:  
 #More ActiveRecord
 
 
@@ -644,7 +644,7 @@ A few years pass, and now the principal wants back the `first_name` and `last_na
 I'm just tired physically. Mentally, I think I can be pushed more. I've been learning a few cool tidbits here and there this week, but not sure if it makes up for all the other stuff.
 
 
-#Thursday - 10/21:  
+#Thursday - 10/23:  
 #More ActiveRecord 
 
 Today's Highlight:  Really Understanding The Difference Between `.build` and `<<`
@@ -670,7 +670,7 @@ So while it was good to dig deep and be forced to explain every little thing tha
 
 I want to go deeper into my studies, while Dev Bootcamp keeps asking that we go for breadth. I think I already have that.
 
-#Friday - 10/21:  
+#Friday - 10/24:  
 #Phase 1:  Group Projects
 
 Today's Highlight:  Messing Around with Twilio API
@@ -715,6 +715,11 @@ A student, Ruskin said it best. Most of the lectures are just okay. However, wha
 Unfortunately for many of us, Dev Bootcamp focuses a bit much on beginners. And with the lack of teachers and coaches, it feels like some of us are simply teaching other students.
 
 Next week, starts Phase 2, a dive into front-end technologies. It's exciting, however there are also ~10 people repeating Phase 2. Meaning, our cohort just grew from 30 to 40. 40 people, just one or two teachers.
+
+
+############################################################
+Missing 1 week
+############################################################
 
 #Monday - 11/3:  
 #Phase 2:  Javascripting the DOM
@@ -910,7 +915,7 @@ Here, the `response` (which we can name `banana` or anything else we want) is th
 That's as far as I'm going to summarize today. However, we follow similar format and syntax to make delete or create database request. I'm sure you can figure it out yourself. =)
 
 
-#Thursday - 11/5:  
+#Thursday - 11/6:  
 #Phase 2:  Group Projects Part 1
 
 Today's Highlight:  Javascript DOM Games
@@ -1086,3 +1091,130 @@ Here, `capybara` can visit a url path, click a link, and expect content `within`
 
 Today's Highlight:  Cool Routing, Simple API, Complicated AJAX
 
+#Thursday - 11/27:  
+#Phase 3:  Devising Thanksgiving
+
+Dev Bootcamp gave us Thanksgiving off. So, I decided to give a heads start and try to build out the authentication system for our final project. As [`devise`](https://github.com/plataformatec/devise) seemed to be the most secure authentication gem around, I've been fiddling with it all day. 
+
+Devise turned out to be more complex than I thought. While Devise provides you with multiple modules and features (like forgotten password, remember tokens, etc.), it requires that you follow it's conventions. That is, I had to spent a lot of time reading the documentation.
+
+To set-up devise, takes only a few steps:
+
+1. Add the gem to your app's Gemfile
+2. `bundle install`
+3. `rails g devise:install`
+4. `rails g devise user` -- creates a user model with routes, and devise tidbits
+5. `rake db:migrate`
+6. `rails g devise:views users` -- creates the user views for things like login and registration
+
+However, you can also add Devise to your current app by following the steps above -- except Step (6). (Hopefully, you already have sign-in and sign-up pages.)
+
+In any case, the most customization you can have with devise is on the model. After Step (4), your model should contain a few Devise modules, denoted as `-able`.
+
+	class User < ActiveRecord::Base
+	  # Include default devise modules. Others available are:
+	  # :confirmable, :lockable, :timeoutable and :omniauthable
+	  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+	end
+
+These modules are fairly self-explanatory. As you might imagine, `validatable`, provides default validations on your model, like `validates_presence_of`, `validates_uniqueness_of`, and [more](http://github.com/plataformatec/devise/blob/master/lib/devise/models/validatable.rb). 
+
+###Omniauthable
+One module that is of use is super useful is `omniauthable`. After including it in your model (see above code), go to your OmniAuth configuration in `config/initializers/devise.rb`:
+
+	config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo' 
+
+You simply need to add in your github, `APP_ID` and `APP_SECRET` for OAuth to work. That said, you might want to use gem `dotenv` to set an environment variable (so that no one else can see your OAuth keys).
+
+#Friday - 11/28:  
+#Phase 3:  Throwing Out Devise, Building Rails API
+
+I spent the morning today trying to sign in users with Ajax *while using Devise*. Essentially, I wasted three hours.
+
+Apparently, almost every team building their final project with a Rails API was having a similar problem with authentication. Some are even trying client-side authentication (sounds terrible). 
+
+I could go into all the reasons why the our API isn't working with Rails, but I don't quite understand the problem myself. 
+
+Apparently, the [tutorial](http://hackhands.com/sign-users-ajax-using-devise-rails/) I was using was completely wrong. I haven't used [this tutorial](http://blog.andrewray.me/how-to-set-up-devise-ajax-authentication-with-rails-4-0/), but it looks like the "right way".
+
+Whatever the case, one of the DBC coaches, Joan, mentioned that authentication is not part of MVP. It is part of production. As such, I made the call around noon that I would stop trying to "figure out" Devise.
+
+In doing so, I was able to direct some members of the team to build out the Rails API based on this [Railscast episode](http://railscasts.com/episodes/350-rest-api-versioning). My felt really accomplished finally getting *something* to work. So, I'm proud of the small step we made today.
+
+However, the real struggle we have now is getting Twilio to make a phone call. For some reason, making a phone call is way more difficult than making a simple text message. Following this [Twilio tutorial](http://www.twilio.com/docs/howto/appointment-reminder) is a real pain. It just goes to show how bad some documentation is out there. 
+
+All that we know is that, because we're running our app on `localhost:3000`, we need to use `ngrok`. Again, not sure what this does exactly, but ngrok provides an actual web address that lets anyone access *my* specific `localhost:3000`.
+
+Now, we have to get Twilio to work. And then we have to schedule the calls at the right times...
+
+#Saturday - 11/29:  
+#Phase 3:  Scheduling with Whenever & Other Cron Jobs?
+
+I got in later than I wanted to today, but thankfully my teammates had been chugging away at the Twilio and scheduling problems.
+
+The good news was that John and the team got Twilio phone call to work. The bad news was that we spent the whole rest of the day 8+ hours trying to get the scheduling to happen.
+
+John decided to tackle the `[whenever](http://github.com/javan/whenever)` gem since DBC Coach Sam was able to help him understand what was going on better. Meanwhile, I worked on getting Sidekiq to work with Redis.
+
+I quickly hit a bug with my Sidekiq worker. Despite debugging Redis for a couple hours with another cohort-mate (not a team member), I was still lost. After a stand-up, our team agreed that to scrap Sidekiq. As Sam would soon be ready to help us and our teacher Masha recommended `whenever`, we decided to stick with it.
+
+Apparently, we only needed to two things to run `whenever`:  (1) a model method in our Events table and (2) a rake task that calls that model method at a recurring time.
+
+We started thinking about how to attack this problem, but we're still lost. We still need (1) a model method that checks our database for the right events to pass Twilio information to and (2) we need to learn how to right a [rake task](http://eewang.github.io/blog/2013/03/12/how-to-schedule-tasks-using-whenever/).
+
+Currently, we're lost on both.
+
+#Sunday - 11/30:  
+#Phase 3:  Sidetiq & Sidekiq to the Rescue?
+
+Today, we went in looking for a coach. Thank god they were there. Unfortunately, it was only after maybe 3 or so hours could a coach really help. And what the coach found out set us back again. 
+
+`whenever` and other cron jobs we were looking at are apparently the wrong tool for the job. For some reason, the coach explained, Cron jobs are meant only for local environments. So, `whenever` wouldn't work well on Heroku.
+
+Luckily, Heroku does have a [Heroku Scheduler](http://addons.heroku.com/scheduler) add-on. Unfortunately, when John was spiking on it, it seems like Heroku Scheduler doesn't suit our needs. 
+
+Another coach came in and recommended [Sidetiq](http://github.com/tobiassvn/sidetiq) (not Sidekiq). Again, I'm not quite sure why the benefits are what they are. But, this coach said that, given our needs, Sidetiq should work. Moreover, their senior engineering management had looked at the array of different "Cron jobs", and Sidetiq seemed to be the one silver bullet.
+
+Sidetiq, however, can't work without Sidekiq. Despite the team effort, we couldn't figure out what was we were doing wrong with Sidekiq. We even pulled in a ***third*** coach. He wasn't able to solve our problem either.
+
+#Monday - 12/1:  
+#Phase 3:  This shit is getting annoying.
+
+Today, we spent half the day looking at Sidetiq again. Our teacher Masha came over to help debug a few things, but, in the end, we couldn't figure out what was going wrong. 
+
+Once again, we had to scrap our (fifth? sixth?) gem, Sidetiq.
+
+Masha recommended Clockwork instead. And THANKFULLY, she found a repository where someone actually got [Sidekiq to work with Clockwork](http://github.com/neckhair/worker-example). So, at least we know that our app ***is*** possible.
+
+The only snag was that Sidekiq *still* wasn't working. I've asked some of the more "advanced" people in the class for help -- for an idea of what was going on. I was able to pull Bryan aside for a moment. 
+
+While I was explaining the problem for, maybe, the 30th time, it hit me. (At this point, I had finally mounted the Sidekiq dashboard below) 
+
+![](../../images/sidekiq-dashboard.png)
+
+When I had first fiddled with Sidekiq several days ago, I had created a few background workers with invalid data. *I forgot to delete those workers from the Sidekiq queue*.
+
+###Getting Clockwork to Work
+
+We spent, maybe, 3 hours total *just* talking about Clockwork. The documentation is hefty, so it was well worth the investment (though we still don't understand everything that's going on).
+
+We did what we could, and I think that's a lot.
+
+In reading the "[Example Setup](http://github.com/tomykaira/clockwork)" portion of the documentation, we needed to create a `FrequencyPeriod` migration and class. Then, we needed to add three time fields (`:at`, `:frequency_period`, `frequency_quantity`) to our Events migration, and a model method to the Events table. 
+
+But, of course, something is breaking now. I'm getting a NameError in my `clock.rb`file. We'll look at it tomorrow...
+
+#Tuesday - 12/2:  
+#Phase 3:  It works!
+
+
+
+#Wednesday - 12/3:  
+#Phase 3:  
+
+#Thursday - 12/4:  
+#Phase 3:  
+
+#Friday - 12/4:  
+#Phase 3:  
