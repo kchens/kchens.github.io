@@ -1206,15 +1206,93 @@ In reading the "[Example Setup](http://github.com/tomykaira/clockwork)" portion 
 But, of course, something is breaking now. I'm getting a NameError in my `clock.rb`file. We'll look at it tomorrow...
 
 #Tuesday - 12/2:  
-#Phase 3:  It works!
+#Phase 3:  Still Not Working...It works!
+
+####Problem of the Day 1
+We're still running into the NameError. I got so frustrated that I even posted the question on [StackOverflow](http://stackoverflow.com/questions/27256228/nameerror-using-rails-sidekiq-clockwork). Essentially, it was a simple Ruby misunderstanding -- something we didn't catch because of all the days we spent up until 2-3am working on this project.
+
+Nonetheless, that's no excuse. Essentially, [Clockwork](http://github.com/tomykaira/clockwork) can be used in two ways: (1) As a scheduler for "simpler" work, or (2) to manage dynamic events from a database.
+
+Our app works with #2. As Medmento asks users to set times for phone calls to be made, our web app is saving the *time to run the event* in the database. And because Clockwork checks each database record for three fields (`:at`, `:frequency_period`, `frequency_quantity`), we have to use the according Clockwork files.
+
+That is, we have to use these [`database_events` files](http://github.com/tomykaira/clockwork/tree/master/lib/clockwork/database_events), not [these files](http://github.com/tomykaira/clockwork/tree/master/lib/clockwork).
+
+So, when we set-up our Clockwork config file we have to namespace the `Manager` accordingly:
 
 
+	require_relative "../config/boot"
+	require_relative "../config/environment"
+
+	require 'clockwork'
+	require 'clockwork/database_events'
+
+	module Clockwork
+
+	  Clockwork.manager = DatabaseEvents::Manager.new
+		...
+		...
+	end
+
+####Problem of the Day 2
+
+For about 24 hours, my team and I had been misunderstanding how to set-up Clockwork's to sync with our database. We knew that Clockwork checks three custom fields, but we didn't know exactly what value we were supposed to place inside those attributes. Thankfully, teacher [Brandon](http://twitter.com/brandon_weiss) came to the rescue.
+
+Essentially, we had kept mix and matching the fields incorrectly. For example, we wanted to set an event for 12PM every day. We had set the `frequency_quantity` = 1, `frequency_period` = hour,  `at` = 12:00.
+
+However, that makes no sense according to Clockwork. Because we are specifying a `frequency_period` of an hour, our `at` attribute should have two wildcards for the hour, like `**:30`. Now, our event will run every hour at the 30 minute mark. This is a vast departure from what we wanted. To run an event every day at 12PM, we would need:  `frequency_quantity` = 1, `frequency_period` = day,  `at` = 12:00.
+
+Our teammate [Juan](http://github.com/jupamedig) summed up our understanding as so:
+
+| `frequency_quantity` | `frequency_period` | `at` | clockwork interpretation |
+|---|---|---|---|
+| 1 | week | day, hour & minutes: `Monday 1:30` | "every 1 week on Monday at 1:30AM" |
+| 1 | day | hour & minutes: `13:30` | "every 1 day at 1:30PM"|
+| 1 | hour | minutes: `**:30` | "every 1 hour at the 30 minute mark" |
+
+####Now, It Works
+
+Finally.
 
 #Wednesday - 12/3:  
-#Phase 3:  
+#Phase 3:  It Broke.
+
+We're not quite sure why Medmento broke, but it cost us most of the day.
+
+Luckily, we were able to regroup and accomplish a few new features.
+
+###1. We can personalize the phone call.
+
+Not only can did we learn how to change the automated voice on the phone, but we learned how to change the script. It just took a bit of XML learning.
+
+First, you have to specify that you want an XML template to render. In your *controller*, type something like:
+
+	render "invalid_num.xml.builder", :layout => false
+
+In our case, we didn't need a layout -- an actual page to render.
+
+Second, create the corresponding XML file inside your Rails' Views folder (if you have more than one controller, don't forget to specify the folder).
+
+Finally, write the XML!
+
+	xml.Response do
+	  xml.Say "Invalid pain rating.", voice: 'alice'
+	  xml.Redirect @redirect_to
+	end
+
+As we're using Twilio, Twilio has a few custom XML elements -- `Response` and `Say`. Once this view is hit, our Rails app knows to *respond* by *saying* the text above -- with the voice of a woman named Alice. After the voice message is done, the app will redirect to a URL.
+
+###2. We got a pain rating graph!
+
+After adding a new route, I was able to feed the front-end of the app data to render into a nice graph like so:
+
+![](../../images/Pain_Chart.png)
 
 #Thursday - 12/4:  
-#Phase 3:  
+#Phase 3: 
+
+
 
 #Friday - 12/4:  
-#Phase 3:  
+#Phase 3:  I "Tai Chi While Drinking Chai Tea"
+
+Today, I graduated.
