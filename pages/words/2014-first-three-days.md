@@ -1288,9 +1288,15 @@ After adding a new route, I was able to feed the front-end of the app data to re
 ![](../../images/Pain_Chart.png)
 
 #Thursday - 12/4:  
-#Phase 3: 
+#Phase 3: More Bugs and Presentation Pains
 
+We spent half the day fixing problems. But I got to spend some time getting a Taylor Switt MP3 to play with `xml.Play 'http://kchens.github.io/sounds/TaylorSwiftCall.mp3'`. Still, after our first presentation run-through with Masha, we had to scrap it.
 
+We spent maybe another 6-7 hours creating the presentation, finalizing the structure and what we were going to say. All in all, I'm really happy with how things turned out. I'm super tired. But, happy nonetheless. Can't wait for tomorrow.
+
+Here's what's in store:
+
+<iframe src="http://prezi.com/embed/g2kx3qdhe1gd/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;features=undefined&amp;token=undefined&amp;disabled_features=undefined" width="550" height="400" frameBorder="0" webkitAllowFullScreen mozAllowFullscreen allowfullscreen></iframe>
 
 #Friday - 12/4:  
 #Phase 3:  I "Tai Chi While Drinking Chai Tea"
