@@ -720,6 +720,78 @@ Next week, starts Phase 2, a dive into front-end technologies. It's exciting, ho
 ############################################################
 Missing 1 week
 ############################################################
+#Monday - 10/27:  
+#Phase 2:  First Day With Sinatra
+
+I didn't spend any time learning Sinatra over the weekend (I was busily learning Rails), so today was interesting.
+
+To be honest, I don't like Sinatra much at all. It seems like you have to do so much of the heavy lifting as a programmer -- from writing custom routes (as if they were HTTP parts) to even managing the controller from getting to 
+"fat".
+
+In any case, it has helped drill in some points about web development. Namely, you can specify the routes however you like:
+
+	get '/' do
+	end
+
+	get '/grandma' do
+	end
+
+Moreover, Sinatra forces you to actually specify which HTTP action you need to hit:
+
+	post '/grandma' do
+	  hello = params[:user_input]
+	  if hello == hello.upcase
+	    hello = "#{hello}, I HAVE NOT SINCE 1979."
+	    redirect "/?grandma=#{hello}", 303
+	  else
+	    hello = "Speak up, kiddo!"
+	    redirect "/?grandma=#{hello}", 303
+	  end
+	end
+
+Here, the view asks to POST some information to the route above. The route then checks the variable `hello` and redirects to the `/?grandma=#{hello}` route with the corresponding message.
+	
+###Rendering Views
+
+Like Rails, Sinatra can render views. You can specify which views to render inside the controller:
+
+	get '/:word' do
+	  @word = params[:word]
+	  @anagrams = Word.anagrams(@word)
+
+	  erb :"anagrams/index"
+	end
+
+-	`erb` specifies that you want to create a view, specifically an "embedded ruby file". It's basically an HTML file with the ability to write ruby inside.
+-	next, you specify the file you want to reference. Here, we're referencing the `index` view inside the `anagrams` folder (under `views`).
+
+###Creating Partials
+
+Often times, you'll want to iterate through a list and print out the information. Instead of writing all the logic (a `.each` loop), you can create a partial like so:
+
+	  <p>Show a list of anagrams for "<%= @word %>"</p>
+	  <% @anagrams.each do |letter_v| %>
+	      <%= erb :"anagrams/anagrams", :locals => {:letter_k => letter_v } %>
+	  <% end %>
+
+Here, you are telling the program to render an anagrams (erb) partial. Then, you'll passing in locals variable. 
+
+Next, in the actual `anagrams/anagrams` file, we only need to specify the `letter_k` for the partial to render the actual value (`letter_v`):
+
+	<p><%= letter_k %></p>
+
+#Tuesday - 10/28:  
+#Phase 2:  Deeper into Sinatra CRUD
+
+#Wednesday - 10/29:  
+#Phase 2:  Building Bit.ly with Sinatra
+
+#Thursday - 10/30:  
+#Phase 2:  Flashcards in Sinatra Pt.1
+
+#Friday - 10/31:  
+#Phase 2:  Flashcards in Sinatra Pt.2
+
 
 #Monday - 11/3:  
 #Phase 2:  Javascripting the DOM
@@ -1294,9 +1366,7 @@ We spent half the day fixing problems. But I got to spend some time getting a Ta
 
 We spent maybe another 6-7 hours creating the presentation, finalizing the structure and what we were going to say. All in all, I'm really happy with how things turned out. I'm super tired. But, happy nonetheless. Can't wait for tomorrow.
 
-Here's what's in store:
-
-<iframe src="http://prezi.com/embed/g2kx3qdhe1gd/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;features=undefined&amp;token=undefined&amp;disabled_features=undefined" width="550" height="400" frameBorder="0" webkitAllowFullScreen mozAllowFullscreen allowfullscreen></iframe>
+[Here's what's in store.](http://prezi.com/g2kx3qdhe1gd/?utm_campaign=share&utm_medium=copy&rc=ex0share)
 
 #Friday - 12/4:  
 #Phase 3:  I "Tai Chi While Drinking Chai Tea"
