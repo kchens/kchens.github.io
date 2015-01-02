@@ -907,16 +907,108 @@ Sometimes, not all tests will have a "Given":
 Here, (2) when the users hits the `/123456` route, (3) then the app should have a last response status of `200`.
 
 #Thursday - 10/30:  
-#Phase 2:  Flashcards in Sinatra Pt.1
+#Phase 2:  Flashcards in Sinatra Pt.1:  Learning Bootstrap
 
-Sketching an app
+Today we had our first group project. We'll have one every Friday for Phase 2. To be honest, I didn't learn much code today. But, I did learn how the importance of design.
+
+My team (Murat, Ariana, and Christine) and I started out the day sketching out each individual web page -- what features those web pages had (be it links or buttons) and the routes that led to other pages and back.
+
+Only after figuring out the design did we move onto the databases.
+
+Though the whole process was tedious (it took us 2 hours), it nonetheless drilled home the point that (1) ideas change fast (2) what looks like a good idea is terrible once you draw it out, and (3) you should always draw out the flow of the app before programming.
+
+I wish I had a picture of the whiteboard. We really did spend a lot of time on this.
+
+###Bootstrap
+
+Bootstrap is a front-end framework mainly used for design. The most salient takeaway I had in using bootstrap was that it made spacing a non-issue.
+
+Bootstrap breaks up the webpage into 12 columns of predefined width (60 pixels).
+
+![](../../images/bootstrap-columns.png)
+
+As you can see, Bootstrap has elements that let you combine 4, 6 or 8 of those 60-pixel boxes into one. So, the `.col-md-4` has a width of ~240px; `.col-md-6` has a width of ~360px.
 
 #Friday - 10/31:  
 #Phase 2:  Flashcards in Sinatra Pt.2
 
-Bootstrap 
+Authentication is kind of a mother f...ather. It seems really straightforward, but actually it's pretty complex. 
 
-Authentication 
+###The Set-up
+
+We'll only be storing a *hashed* password in the database. If a hacker gets ahold of our database, we don't want him to have access to the clearly-written passwords.
+
+So, set your migration to only take the `username` and `password_hash`.
+
+	class CreateUsers < ActiveRecord::Migration
+	  def change
+	      create_table :users  do |t|
+	        t.string :username
+	        t.string :password_hash
+
+	    end
+	  end
+	end
+
+
+###Hashing & Unhashing the Password
+
+	require 'bcrypt'
+
+	class User < ActiveRecord::Base
+	  # users.password_hash in the database is a :string
+
+	  # write a setter that takes a plaintext pw & hashes it
+	  def password=(new_password)
+	  	#1. hash the password
+	  	#2. store password in the password_hash attribute
+	    @password = Password.create(new_password)
+	    self.password_hash = @password
+	  end
+
+	  # write a getter that takes the password_hash and
+	  # 3. returns an object that I can compare with plaintext passwords
+	  def password
+	    @password ||= Password.new(password_hash)
+	  end
+
+	end
+
+Notice the notes #1, #2, #3, I made above. Essentially, here's what happens when doing #4:  Validating the password.
+
+
+	(1 & 2) original_pw = BCrypt::Password.create("hello")
+	 => "$2a$10$5uO3WftdMozsnSGpcDf/Luandap46hrMYjRVxg06yLfwJ9to2.SWm" 
+	(3) password_hash = BCrypt::Password.new(original_pw)
+	 => "$2a$10$5uO3WftdMozsnSGpcDf/Luandap46hrMYjRVxg06yLfwJ9to2.SWm" 
+	(4) password_hash == "hello"
+	 => true 
+
+###Signing in Users (Methods for the Controller)
+
+Also inside the User model, we have to include model methods `authenticate`. 
+
+	class User < ActiveRecord::Base
+		...
+		...
+		def self.authenticate(name, password)
+		  dog = Dog.find_by_name(name)
+		
+		  return nil unless dog 	#to escape out of method ASAP
+		
+		  dog.authenticate(password) ? dog : nil 
+		end
+		
+		def authenticate(password)
+		  self.password == password	#compare hash pw to entered pw
+		end
+		
+	end
+
+While not necessary, the helper method `authenticate` helps us separate out the hashed-password-to-password comparison. 
+
+Anyway, here's what our final product looked like:
+![](../../images/dbc-flashcards.png)
 
 #Monday - 11/3:  
 #Phase 2:  Javascripting the DOM
@@ -1147,7 +1239,7 @@ Very simply, your MVC should look like this:
 	
 
 
-#Friday - 11/6:  
+#Friday - 11/7:  
 #Phase 2:  Group Project Part 2
 
 Today's Highlight: 
