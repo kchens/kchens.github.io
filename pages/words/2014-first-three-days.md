@@ -717,9 +717,6 @@ Unfortunately for many of us, Dev Bootcamp focuses a bit much on beginners. And 
 Next week, starts Phase 2, a dive into front-end technologies. It's exciting, however there are also ~10 people repeating Phase 2. Meaning, our cohort just grew from 30 to 40. 40 people, just one or two teachers.
 
 
-############################################################
-Missing 1 week
-############################################################
 #Monday - 10/27:  
 #Phase 2:  First Day With Sinatra
 
@@ -783,15 +780,143 @@ Next, in the actual `anagrams/anagrams` file, we only need to specify the `lette
 #Tuesday - 10/28:  
 #Phase 2:  Deeper into Sinatra CRUD
 
+I can't remember how exactly to do forms in Rails, but I'm kinda surprised how much more understandable creating a form in Sinatra is. Perhaps, it's just the fact that I can rely on my Rails experience. But perhaps it's because  Sinatra is different.
+
+###Creating a New Form
+To create a form inside Sinatra, we simply need to copy the HTML form template. A few things to know:
+
+-	`action` is the route that we'll be posting the data to
+-	`method` is the type of HTTP verb that further specifies the route 
+
+In this `New Article` form, we'll be *posting* the information to the *articles* route. For the sake of example, let's say we created an article with the `title`: "Jack's Piano" and `body`: "100 year's old. Brown.".
+
+	<h1>New Article</h1>
+
+	<form action="/articles" method="post">
+	    <div>
+	        <label for="title">Title:</label>
+	        <input type="text" name="title" />
+	    </div>
+
+	    <div>
+	        <label for="body">Body:</label>
+	        <textarea name="body"></textarea>
+	    </div>
+
+	    <div class="button">
+	        <button type="submit">Submit</button>
+	    </div>
+	</form>
+
+###Edit Form
+
+If we want to edit the article, we only need to (1) copy-and-paste the form above. Then, replace the first form tag with this:
+
+	<form action="/articles/<%= @article.id %>/edit" method="post" id="edit">
+	    <input type="hidden" name="_method" value="put">
+	    
+To do this, you need to create a `put` request. The form method remains `method="post"`. However, we will change `post` with a hidden input form (a) using the "magic" `_method` that will allow a put request -- (b) by specifying the `value` as `put`. We do this because [most browsers don't support method other than "GET" or "POST" on forms.](http://stackoverflow.com/questions/7005629/how-to-create-a-delete-form-with-restful-routes-in-rails).
+
 #Wednesday - 10/29:  
 #Phase 2:  Building Bit.ly with Sinatra
+
+Today was tough. There were quite a few stretch challenges embedded within today's challenge. In any case, here are a few key topics we covered.
+
+###Error-Handling with "Flash"
+
+After installing the `gem 'sinatra-flash'` inside the Gemfile, you can now *flash* any kind of message you would like to your users. 
+
+Starting with our controller, say you have a route like so:
+
+	post '/urls' do
+	  @url = Url.new(original: params[:original])
+	  if @url.save
+	    flash[:success] = "Transformed word added!"
+	    redirect "/"
+	  else
+	    flash.now[:error] = "Errors in the form!"
+	    erb :new
+	  end
+	end
+
+Well, as you can see, we now have a flash hash object. Depending on whether the `@url` saves or not, a `success` or `error` key is stored.
+
+Let's assume that `flash[:success]` is stored. Well, how would we see the phrase `"Transformed word added!"` in our webpage? For that, we have to look at our `erb` view.
+
+In our layout, we have the following:
+
+	<% if flash[:success] %>
+        <button type="button" class="close" data-dismiss="alert">
+        	<span aria-hidden="true">&times;</span>
+	        <span class="sr-only">Close</span>
+        </button>
+        <%= flash[:success] %>
+    <% end %>
+    
+As noted in the second to last line of code, if the `flash[:success]` object has a phrase stored inside, then we'll display that phrase. (There's a lot of code above, but most of it is HTML).
+
+### Custom Validations
+
+Besides the usual the `validates :some_variable, presence: true`, there are other Sinatra specific methods like `after_initialize` or `before_save`.
+
+	class Url < ActiveRecord::Base
+	  after_initialize :init_count
+	  before_save :transform_url
+	  
+	  def init_count
+	    self.click_count  ||= 0.0           #will set the default value only if it's nil
+	  end
+
+	  def transform_url
+	    self.short = (0...8).map { (65 + rand(26)).chr }.join
+	  end
+
+	end
+
+In the first case, we say that, *after* a url is *new or loaded from the database*, set the `click_clount` default value to `0.0` if it is `nil`. 
+
+In the second case, we say, *before* a url is *saved to the database*, create a random string of 8 characters for the `short` url. Something like "RMEQRHDI".
+
+### 3 Steps to Perfect Test-Driven Development
+
+*(1) **Given** [initial context/variables], (2) **when** an [event occurs], **then** (3) [ensure some outcomes].* - Wikipedia
+
+It seems self-evident what this means once we bring in some code:
+
+	describe "create and visit new url" do
+	    it "increments click count by 1" do
+	      (1) @url = Url.create(original:"google.com")
+	      	  count = Url.last.click_count
+	      (2) get @url.short
+	      	  count = count + 1
+	      (3) expect(Url.last.click_count).to eq(count)
+	    end
+	end
+
+Essentially, you read it as:  (1) Given a user who created `google.com` link, (2) when someone else visits the short link, (3) then the app should track that short link's clicks has increased by one.
+
+Sometimes, not all tests will have a "Given":
+
+	  describe "get /:short_url" do
+	    it "responds with a successful status" do
+	      (2) get '/123456'
+	      (3) expect(last_response.status).to eq(200)
+	    end
+	  end
+
+Here, (2) when the users hits the `/123456` route, (3) then the app should have a last response status of `200`.
 
 #Thursday - 10/30:  
 #Phase 2:  Flashcards in Sinatra Pt.1
 
+Sketching an app
+
 #Friday - 10/31:  
 #Phase 2:  Flashcards in Sinatra Pt.2
 
+Bootstrap 
+
+Authentication 
 
 #Monday - 11/3:  
 #Phase 2:  Javascripting the DOM
