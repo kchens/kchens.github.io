@@ -1242,20 +1242,107 @@ Very simply, your MVC should look like this:
 #Friday - 11/7:  
 #Phase 2:  Group Project Part 2
 
-Today's Highlight: 
+Today's Highlight: Javascript DOM Game:  Understanding Local & Global Scope
 
+###Local Scope (Function-Level Scope)
 
-Global SCOPE: -- whole document knows about these
+There may be moments when you need to create a variable for when the function executes. Afterward, you want the program to act as if that variable never existed. And if you're inexperienced, you may try to name variables the same name (bad idea). To make sure you're not overriding your variables, you'll really want to understand local scope.
 
-todoName
-todoId
-todoCompleted
+Here's an example of re-writing our variable `frog`:
 
-Local SCOPE:
+	var frog = "Kermit";
+	function showFrog() {
+		frog = "Buzz";
+		console.log(frog);
+	}
+	
+	console.log(frog);  // "Buzz"
 
-var todoName
-var todoId
-var todoCompleted
+Fixing this is simple. To make the `frog` `Buzz` function-level, you simple need to add `var`. That way the `frog = "Buzz"` is a variable *declaration*. 
+
+	...
+	...
+		var frog = "Buzz";
+	...
+	console.log(frog);  // "Kermit"
+
+###Global SCOPE: -- whole document knows about these
+
+You can define a global variable two ways:  With `var` or without it.
+
+	var frog = "Kermit";
+	frogTwo = "Kermit";
+
+<u>That said, a variable declaration *without*  `var` always results in a **global variable**.</u>
+
+You can see that in the code from above (repeated here):
+
+	function showFrog() {
+		frog = "Buzz";
+		console.log(frog);
+	}
+	showFrog();
+	console.log(frog);  // returns "Buzz" because it's in the global context
+
+Now, that you know this, don't pollute the global scope!
+
+Instead of...
+
+	var frogOne = "Kermit", frogTwo = "Buzz";
+	
+	function frogs() {
+		console.log("Frogs: " + frogOne + " and " + frogTwo) 	}
+	
+	frogs(); // "Frogs: Kermit and Buzz"
+
+...place variable declarations *inside* the function like:
+
+	var frogOne=1, frogTwo=2;
+	
+	function frogs() {
+		var frogOne = "Kermit", frogTwo = "Buzz";
+		console.log("Frogs: " + frogOne + " and " + frogTwo) 	}
+	
+	frogs(); // "Frogs: Kermit and Buzz"
+	console.log(frogOne); // 1
+		
+Now, the global `frogOne` and `frogTwo` are not replaced by `Kermit` or `Buzz`.
+
+###No Block-level scope in Javascript
+
+No block-level scope means Javascript variables cannot be declared within brackets, or blocks.
+
+So the code below doesn't work; the global `frog` variable gets replaced with `Buzz`.
+
+	​var frog = "Kermit";
+	{
+	​	var frog = "Buzz";
+	}
+
+	console.log(frog); // "Buzz"
+	
+Again, Javascript has function-level scope.
+
+###Variable Hoisting
+
+Here's what you need to do:
+
+	function showFrog() {
+		var frog; // Here we "hoist" the variable declaration to the top
+		console.log(frog); // undefined
+		frog = "Kermit";
+		console.log(frog); // "Kermit"	}
+	
+We do this because this how the Javascript interpreter works. When the interpreter scans through a program -- like the almost identical one below -- the variable declaration is placed at the top:
+
+	function showFrog() {
+		console.log(frog); // undefined -- is still printed!
+		frog = "Kermit";
+		console.log(frog); // "Kermit"	}
+
+Why is hoisting important? Well, it just makes the code more explicit. Because the Javascript Interpreter hoists the variable declarations anyway, it's helpful as a developer to just do it. That way you, the developer, have more control and more of an understanding of what's going on in your program.
+
+As a result, you should have less bugs.
 
 #Monday - 11/10:  
 #Phase 2:  Building an API
