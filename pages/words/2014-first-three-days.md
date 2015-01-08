@@ -1344,6 +1344,26 @@ Why is hoisting important? Well, it just makes the code more explicit. Because t
 
 As a result, you should have less bugs.
 
+Now, one last thing:
+
+#####<u>**Variable assignment (initialization) > function declaration > variable declaration	**</u>
+
+	console.log("Before: " + typeof frog); // function
+	
+	var frog = "Kermit";
+	function frog() {
+		console.log("Buzz");
+	}
+	
+	console.log("After: " + typeof frog); // String
+
+Basically before the Javascript interpreter is finished "reading" the code, both the variable declaration, *as well as the function declaration* are hoisted to the top (i.e. `var frog` and `function frog...`).
+
+As per the subtitle above, when you ask what type of frog, the program spits out `function`.
+
+However, once the interpreter hits the variable assignment - `var frog = "Kermit"` - frog now becomes a `string.`
+
+
 #Monday - 11/10:  
 #Phase 2:  Building an API
 
@@ -1375,6 +1395,10 @@ Anyway, accessing an API isn't that difficult. The difficult part is parsing tha
 
 -	`before_save` is an ActiveRecord callback. Any `before_save` method will only be invoked when creating or updating a database. However, [AR methods](http://api.rubyonrails.org/classes/ActiveRecord/Callbacks.html) like `update_columns` can skip such callbacks.
 -	Helper methods like `current_user` are intended to be called within the View. However, the Controller does have access to it.
+
+#Wednesday - 11/12:  
+#Phase 2:  OAuth
+
 
 
 #Wednesday - 11/19:  
