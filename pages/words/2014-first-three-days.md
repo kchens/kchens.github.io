@@ -1363,11 +1363,34 @@ As per the subtitle above, when you ask what type of frog, the program spits out
 
 However, once the interpreter hits the variable assignment - `var frog = "Kermit"` - frog now becomes a `string.`
 
-
 #Monday - 11/10:  
 #Phase 2:  Building an API
 
-Building an API is surprisingly easy. All you need to do is change the data into a JSON object and return it through the controller's routes.
+Building an API is surprisingly easy. All you need to do is change the data into a JSON object and return it through the controller's routes. That said, you *should* return an error message if the user sends the a wrong query.
+
+In keeping this post brief, let's dissect just one API. 
+
+	get "/api/v1/user/:id/article/:id/comments" do
+	  user_id = params[:captures][0]
+	  article_id = params[:captures][1]
+
+	  @comment = Comment.where(user_id: user_id, article_id: article_id)
+	  if @comment != []
+	    @comment.to_json
+	  else
+	    halt 404, {errors: "Record not found"}.to_json
+	  end
+	end
+
+Here are the takeaways you should be aware of:
+
+1. To return the information in the format the user expects (in this case JSON), just add the `.to_json` method to the data. Here we're returning all the data associated with `@comment`.
+
+2. Error handling:  Here telling our Sinatra app to return a (hash converted to) JSON.  I.e. `{errors: "Record not found"}.to_json`.
+
+3. We're nice enough to return a HTTP Status code of 404.
+
+4. The user is accessing an API at a certain `user_id` and `article_id` as denoted by `/user/:id` and `/article/:id`. So, we have to parse the params accordingly.
 
 #Tuesday - 11/11:  
 #Phase 2:  Consuming an API
@@ -1399,7 +1422,96 @@ Anyway, accessing an API isn't that difficult. The difficult part is parsing tha
 #Wednesday - 11/12:  
 #Phase 2:  OAuth
 
+OAuth is a pain in the ass. It's a little hard to understand what is going on without a graph. So here are an image to explain it all from the OAuth documentation, courtesy of [hueniverse](http://hueniverse.com/oauth/guide/terminology/):
 
+![](http://hueniversedotcom.files.wordpress.com/2009/12/web-based-client.png?w=1008)
+
+###7 Steps of OAuth
+
+1. The resource owner (or user) decides to give LinkedIn (server) access to the front-end client (a random website). 
+2. The client asks the Twitter (server) for the resource owner's data. LinkedIn will only respond to the client's request *if* the website gives LinkedIn some client credentials (i.e. `client_id`, consumer key, secret, etc).
+3. LinkedIn (server) asks the resource owner if he really wants to give the client access.
+4. The resource owner says, "yes". He enter his LinkedIn username and password.
+5. LinkedIn sends the client an *authorization token*. 
+6. Now, to get a user's LinkedIn information, the client has to send (a) the authorization token (b) the type of information the client wants/needs.
+7. LinkedIn sends the client an *access token*.
+8. The client can pass the access token to LinkedIn along with any authorized request.
+
+Here's how these steps look in the eyes of the user.
+
+1. [Click here to sign-in with LinkedIn]() (Link doesn't work).
+2. After the user clicks, the client redirects to LinkedIn with a customized `CLIENT_ID_KEY` -- thereby *authenticating* the client. (`state` is to help prevent CSRF attacks; you should generate the `RANDOM_STRING` with a helper method. `redirect_url` is where LinkedIn will pass tokens to.) 
+
+		get '/oauth2/auth' do
+			redirect('https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=CLIENT_ID_KEY&redirect_uri=http://localhost:9393/oauth2/code&state=RANDOM_STRING&scope=r_fullprofile')
+		end
+3. You'll see a webpage and box asking for your LinkedIn credentials.
+4. User enters credentials.
+5. LinkedIn gives the client an authorization token (to the redirect endpoint from Step 2.)
+6. The client sends a (post) request with an authorization token and *authorization-required*  information.
+7. LinkedIn sends back an `access_token`, which will serve as a username and password for the user.
+	####Steps 5-7
+
+		get '/oauth2/code' do
+
+		  if params['state'] == "DCEEFWF45453sdffef424"
+		    response = HTTParty.post("https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&code=#{params['code']}&redirect_uri=http://localhost:9393/oauth2/code&client_id=CLIENT_ID&client_secret=CLIENT_SECRET")
+		    session[:token]= response['access_token']
+		  end
+		end
+
+8. Using the `access_token`, the client can retrieve data from LinkedIn.
+
+		get '/getdata' do
+		  p session[:token]
+
+		  user_data = HTTParty.get("https://api.linkedin.com/v1/people/~",
+		  headers: { "Host" => "api.linkedin.com",
+	            "Connection" => "Keep-Alive",
+	            "Authorization" => "Bearer #{session[:token]}"})
+
+		end
+
+[Shout out to David Lyness for his awesome graphic](https://davidlyness.com/post/twitter-oauth).
+
+#Thursday - 11/13:  
+#Phase 2:  Taylor Tube 
+
+#Friday - 11/14:  
+#Phase 2:  Pushing to Heroku
+
+
+
+#Monday - 11/17:  
+#Phase 3:  Starting Rails
+
+After six weeks, I'm finally back to Rails. Officially. It's a little bittersweet as I like that I was forced to really understand the web applications using Sinatra.  
+
+Anyway, today we worked on this [tutorial](http://guides.rubyonrails.org/getting_started.html). Here are a few bits that I understand better now about Rails.
+
+1. `form_for` makes it easy to specify a endpoint for form data with `url`. Moreover, you can specify the HTTP method with `method`. This is an edit form so the method type is a `patch`.
+
+		<%= form_for :article, url: article_path(@article), method: :patch do |f| %>
+
+2. Instead of `:article`, you can write `@article`. The main difference is that, if `@article` refers to a record in the database, then the webpage form will be filled with that record's information at first glance (useful for edit forms).
+
+		<%= form_for @article do |f| %>
+		  ...
+		<% end %>
+3. When interacting with the controller, you can have the view create a different `params[:key]`, with the `as` method:
+
+		<%= form_for(@article, as: :post) do |f| %>
+		  ...
+		<% end %>
+
+	Typically, you would access the article values with `params[:article]`. This is by default because the params key is derived from the object's (`@article`) class. Here, we change that class -- and hence the params key -- to `:post`.
+
+#Tuesday - 11/18:
+#Phase 3:  Testing Rails
+
+Today was another day of review. We went over RSpec, but for Rails. We TDD, but for Rails.
+
+I think the most useful thing I learned was to use [Simplecov ](http://github.com/colszowka/simplecov) for development. Essentially, Simplecov checks to see that every line of your code is covered with a test, then calculates a test coverage percentage.
 
 #Wednesday - 11/19:  
 #Phase 3:  Rails Set-up & Testing
@@ -1487,9 +1599,189 @@ Here, `capybara` can visit a url path, click a link, and expect content `within`
 -	To delete a remote branch (after committing and merging), `git push origin :<branch name>`. Essentially, we are pushing an empty branch (left side of colon) to the remote branch. This is similar to, in Heroku, `git push production <feature branch>:master` -- which makes the feature branch a master branch.
 
 #Thursday - 11/20:  
-#Phase 3:  Rails Routing, APIs, and AJAX
+#Phase 3:  Rails' AJAX in Stack Overflow
 
-Today's Highlight:  Cool Routing, Simple API, Complicated AJAX
+As a former Dev Bootcamp teacher said, "no one uses this in real life." 
+
+I can see why. Rails AJAX *may* seem simple to a fairly experienced Rails developer, however to a general web developer Rails AJAX convolutes Javascript. It seems that Rails developers found Javascript so scary to work with that they created a workaround. Let's see how it plays out for creating and destroying a StackOverflow questions.
+
+###Creating with Rails AJAX
+
+#####`remote: true`
+
+*Assuming* that you've set up a basic form, your StackOverflow questions will route to the `QuestionsController#create`. 
+
+The only new thing you have to do with the form is to set `remote: true`. This disables Rails from initiating the *default action* -- in this case, reloading the *entire* page. 
+
+	<%= form_for(@question, remote: true, html: { id: "new_form" })  do |f| %>
+
+	  <%= f.label :title %>
+	  <%= f.text_field :title %>
+	  <br>
+	  <%= f.label :body %>
+	  <%= f.text_area :body %>
+
+	  <%= f.submit "Add" %>
+
+	<% end %>
+
+Now, when you hit "Add", the data is sent to the server through AJAX. 
+
+#####Render a Javascript view with `respond_to` 
+
+The new part we'll add to the controller is to ask to render a *Javascript* view. We do that by asking using the `respond_to` method.
+
+	  def create
+	    @question = Question.create(question_params)
+	    @questions = Question.all
+
+	    if @question.save
+	      respond_to do |format|
+	        format.js { render :create } #renders a view create.js.erb
+	      end
+	    else
+	      render "index"
+	    end
+	  end
+
+Now, when the questions saves properly, we'll render the `create.js.erb` below:
+
+	$("<%= j (render @question) %>").prependTo("#questions")
+
+The first line here may seem really complicated. But, all that's happening is that we're using jQuery (the `$` and `.prependTo`) to add some `html.erb` elements to list with id `#questions`. 
+
+Specifically, we're going to add this `<%=  render @question %>`, so the new `question` is added.
+
+*What happened to the `j`? What is it?*
+
+Well, the `j` tells Rails' `.js.erb` files to *escape out of Javascript*.
+
+###Destroying with Rails AJAX
+
+Destroying a question follows a similar process. Only a few things change. (Knowing the slight differences can help you understand how to build out the rest of the CRUD actions.)
+
+In rendering each question (in a partial), you should attach a delete link like so:
+
+	<%= link_to question.title, question %>
+	<%= question.body %>
+	<%= link_to "Delete", question, remote: true, method: :delete %>
+
+Once again, we disable the default action (to jump to a url path) with `remote: true`. Now, we have to route the link to a specific action, hence `method: :delete`. That brings us to `QuestionsController#delete`:
+
+	class QuestionsController < ApplicationController
+	  before_action :all_tasks, only: [:index, :create, :update]
+	  ...
+	  def destroy
+	    @question = Question.find_by(id: params[:id])
+	    @question.destroy
+	    all_tasks
+	    
+	    respond_to do |format|
+	      format.js { render :destroy }
+	    end
+	    
+	  end
+	  ...
+	  private
+
+	  def all_tasks
+	    @questions = Question.all.reverse
+	    @question = Question.new
+	  end
+
+(Here, I did something fancy. Instead of creating the `index` action, I simply created a ActiveRecord callback to that results in updating `questions` for certain actions. I then use that same private method within `destroy`, so my code is DRY.)
+
+Inside `destroy.js.erb`, you simply need to make a jQuery call and escape out of Javascript to render the updated `questions`:
+
+	$('#questions').html("<%= j (render @questions) %>")
+
+###Tidbit
+
+Instead of specifying the format for each action, you can specify it at the top. 
+
+Moreover, all Javascript views default to the action name -- i.e.  `QuestionsController#create` will render `create.js.erb`. So, there's no need to actually type `render :create`.
+
+	class QuestionsController < ApplicationController	  respond_to :html, :js	
+	
+	  def create
+	    @question = Question.create(question_params)
+	    @questions = Question.all
+	    if @question.save
+	      #no need to render: create
+	    else
+	      render "index"
+	    end
+	  end	
+
+#Friday - 11/21:  
+#Phase 3:  Rails API Group Project:  CORS Headers
+
+*Written after Dev Bootcamp*
+*To be honest, this was kind of a wasted day at Dev Bootcamp. In addition to some disorganization, no one really worked on this project. That said, I think there are some important things to learn here.*
+
+If you're building a decoupled application with a server-side API, chances are you've run into a Cross-Origin Resource Sharing (CORS) problem. Chances are you've run into this problem: 
+	
+	No ‘Access-Control-Allow-Origin’ header is present on the requested resource.
+
+Specifying CORS Headers is a way to share server data (resources) with any client (or person on a webpage). 
+
+###1. Simple Requests - `GET`, `HEAD`, `POST`
+
+To `GET` or `POST` data, all you need to do is add the client-side domain to the list of allowed origins like so:
+
+	headers['Access-Control-Allow-Origin'] = '*'
+	
+`*` means, that any domain can access the resources. You can also specify just one domain like `http://localhost:2828` or `http://example.com`. Or, you can allow none with `null`.
+
+###2a. Advanced (Preflight) Requests - `DELETE`, `PATCH`, `PUT`
+
+When trying to make say, a `DELETE` option, a "preflight" request like the one listed below is made to the server: 
+
+	OPTIONS http://localhost:3000/
+	
+	Access-Control-Request-Method: DELETE
+	Access-Control-Request-Headers: Fun-times, NCZ, Not-So-Lucky-Number
+	Origin: http://localhost:2828    #front-end client
+
+Each of these has a different meaning: 
+
+`Origin` - Are the domains that are allowed to make a request for server resources
+`Access-Control-Request-Method` - List of requests that are allowed
+`Access-Control-Request-Headers` - (optional) A comma separated list of the custom headers being used.
+
+###2b. Server Response
+
+The server will respond to the above preflight request with the following:
+
+	Access-Control-Allow-Origin: http://localhost:2828
+	Access-Control-Allow-Methods: DELETE, GET
+	Access-Control-Allow-Headers: Fun-times, NCZ, Not-So-Lucky-Number
+	Access-Control-Max-Age: 1728000
+
+`Access-Control-Allow-Origin` - Is the *allowed* domain, which is the same as the one listed in the preflight request.
+
+`Access-Control-Allow-Methods` - A comma-separated list of allowed methods 
+`Access-Control-Allow-Headers` - A comma-separated list of headers that the server will allow
+
+###Optional
+
+`Access-Control-Allow-Credentials` - If set to `true`, then cookies are enabled for CORS requests. Don't set this header request unless you are sure you want cookies to be included. 
+`Access-Control-Max-Age` - How long in seconds the client can cache the preflight response, so that it doesn't have to do so *every time*. Most people set it to 1728000 (or 20 days)
+
+###Credits
+
+Huge props to [Nicholas Zakas](http://www.nczonline.net/blog/2010/05/25/cross-domain-ajax-with-cross-origin-resource-sharing/) and [Yihang Ho](http://www.yihangho.com/rails-cross-origin-resource-sharing/). 
+
+#Monday - 11/24:  
+#Phase 3:
+
+
+#Tuesday - 11/25:  
+#Phase 3:
+
+#Wednesday - 11/26:  
+#Phase 3:
+
 
 #Thursday - 11/27:  
 #Phase 3:  Devising Thanksgiving
