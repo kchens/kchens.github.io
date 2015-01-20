@@ -25,7 +25,7 @@ I can see how people really like DBC. The instructors really are uplifting and d
 We learned that to support us, we'll have access to supportive coaches, meetings, yoga, and life coaching.
 
 #####**Reservations**
-These are all great. But for me, after four months of hell. Not just caulking, grouting, and landscaping the house in silence for up to 8 hours in the blazing, humid Virginia summer, but also *learning how to caulk, grout, and landscape.* Suffice it to say, I've already passed the initial shock of anything "surprising" in Life.
+These are all great. But for me, after four months of hell. Not just caulking, grouting, and landscaping the house in silence for up to 8 hours in the blazing, humid Virginia summer, but also learning how to caulk, grout, and landscape. Suffice it to say, I've already passed the initial shock of anything "surprising" in Life.
 
 At times, I like to remind myself:  I have a date with eternity. And so, if I am already living in an endless experience - what's there to stress about? Eternity is here and now? And, eternity could end any moment.
 
@@ -61,7 +61,7 @@ That said, after our first solo day today, I guess it is worth paying $12k for s
 
 Perhaps it's that I'm more mature after going through 4 months of family troubles. But perhaps its because I am feeding off the nervous and excited energy of the other students. 
 
-On another note, I took a call from a recruiter at Mixpanel. Apparently, listing myself as "Web Developer" despite not having any polished programming projects does work. Moreover, I seems to illustrate that the level of competency needed to get an (support) engineering job is very low; that or going to Brown did help in getting a job. Probably a bit of both. 
+On another note, I took a call from a recruiter at Mixpanel. Apparently, listing myself as "Web Developer" despite not having any polished programming projects does work. Moreover, it seems to illustrate that the level of competency needed to get an (support) engineering job is very low; that or going to Brown did help in getting a job. Probably a bit of both. 
 
 I wonder if I instead spent 9 weeks learning what I wanted to learn, I could get the same job coming out of DBC. A couple of the coaches are and had worked as a support or solutions engineer before moving onward.
 
@@ -72,7 +72,7 @@ To that end, I'm toying with the idea of working with Tim on the weekends. I can
 ###Data Structures Notes
 
 -	**Stack**:  Is like a stack of plates. Data goes on top of each other. To get the data off, you have to take from the top of the plate pile. In essence, that means you `#push` values and `#pop` values from the array
--	**Queue**:  Is basically a waiting line -- literally a line that you wait in. People come into the line, and the *first ones in* are the are also the *first ones out*. In an array queue, that means you `#unshift` data into the queue and `#pop` that data out.
+-	**Queue**:  Is basically a waiting line -- literally a line that you wait in. People come into the line, and the *first ones in* are the are also the *first ones out*. In an array queue, that means you `#push` data into the queue and `#shift` that data out from the front of the line.
 -	**Linked Lists**:  Is like people waiting in line, but with invisible strings attached to each other. When the second person is placed into the line, he is automatically attached to the first person; the second person can't help but follow the first person. It is through these invisible ties or *links* that a link list is created. Linked lists can be arrays (`[val, [val,[val,nil]]]`), hashes (``), etc. (I don't know what the etc. might be.)
 
 **In working with hashes, remember a few things:**
@@ -1477,10 +1477,113 @@ Here's how these steps look in the eyes of the user.
 #Thursday - 11/13:  
 #Phase 2:  Taylor Tube 
 
+This week, I already spent about 40 hours creating my Taylor Swift-only YouTube site. Here are a few things I want to mention about my project:
+
+###1. Helpers are Intended Only For Views
+This one is annoying. While the controller and the views have access to the helper methods, (Dev Bootcampers tell me that) helpers should only be used within the view. As a result, I've had to write two duplicative (non-DRY) methods:
+
+	#app/helpers/add_commas.rb
+	  def add_commas(integer)
+	    integer.to_s.reverse.scan(/(?:\d*\.)?\d{1,3}-?/).join(',').reverse
+	  end
+
+	#app/controllers/index.rb
+	def controller_add_commas(integer)
+	  integer.to_s.reverse.scan(/(?:\d*\.)?\d{1,3}-?/).join(',').reverse
+	end
+
+The first method is used when making the *initial* request to pull YouTube likes/dislikes from the database. Because the database stores an integer, the commas need to be added so you see something like "2,000,000" likes. 
+
+The second method is used when making the AJAX request. Whenever someone hits the like or (in this case) love button, the database integer is incremented. Like in the first method, the integer then needs to be converted to a string with commas.
+
+###2. Search Terms Become Categories
+
+Normally, the index view returns *all* records from a database. But because I want to let users see what other search terms *other* people around the world are searching for, I want to separate the search terms from my five, predefined categories. So, the controller logic to render the index view looks like so:
+
+	get '/' do
+	  @categories = Category.all
+	  @original_categories = @categories.to_a.shift(5)
+	  erb :categories
+	end
+
+In the `categories.erb`, I then have two `divs` that interate through the corresponding ActiveRecord collections.
+
+###3. Managing Facebook OAuth
+
+Facebook OAuth was a huge pain. After making an authorization request, Facebook returns the `access_token` and `expires` variables inside a huge string. To parse it, you have to:
+
+1.	Use Ruby's `CGI:parse` to turn the string into a hash.
+2.	Retrieve the `access_token` inside that hash.
+3.	Use the `access_token` to request information from Facebook.
+4.	Parse that JSON information to a Ruby hash.
+
+(This may sound simple, but it isn't. Here's [the module]() that I had to create inside the `lib` folder. I did this to make my controller skinnier)
+
+From there, we can throw that hash into a method and (a) find an existing FB OAuth user or (b) create that user in the database.
+
+
+###4. Cross-Site Request Forgery (CSRF) in OAuth
+
+CSRF is when a user unknowingly clicks on a block of Javascript code on browser tab/website 1 (a forum) that makes a request to browser tab/website 2 (a bank). Often times, this involves changing a victim's email, username, and/or password.
+
+To prevent this with OAuth, the `state` parameter is used. When making the initial authentication request, I call a `#create_api_state` method that generates a random string. I then store that inside `session` and send it off to Facebook:
+
+	get '/facebook/auth' do
+	  if current_user
+	    redirect '/'
+	  else
+	    session[:state] = User.create_api_state #prevent CSRF
+	    redirect "https://www.facebook.com/dialog/oauth?" +
+	      "client_id=#{ENV['FB_ID']}" +
+	      "&redirect_uri=http://localhost:9393/facebook/code&scope=email" +
+	      "&state=#{session[:state]}"
+	  end
+	end
+
+In the callback route, I check that the `session[:state]` matches the state from Facebook, i.e. `params['state']`.
+
+	get '/facebook/code' do
+	  fb_code = params['code']
+
+	  if params['state'] == session[:state]
+		... #Facebook module to login
+	  else
+	    "CSRF ATTACK!"
+	  end
+	end
+
+Because website 1 doesn't have access to the `state` variable as they are rendered from the client and server's back-end, CSRF is preventable.
+
+###5.Favorites/User Page
+
 #Friday - 11/14:  
 #Phase 2:  Pushing to Heroku
 
+Today, I pushed [taylortube.herokuapp.com](http://taylortube.herokuapp.com). I ran into several problems, but one was more of a pain than anything else -- configuring keys.
 
+But first, let's go through the steps of how to normally push to Heroku:
+
+1.	`heroku create` 
+2.	`git push heroku master`
+3. 	`heroku run rake db:migrate` - to run database 
+4.	`heroku run rake db:seed` - to seed your database
+5.	`heroku open` - to see your web app
+
+Afterward, you probably need to configure your environment variables. In my case, I had a `dotenv` file with API keys that -- by default -- are not sent to Heroku. You can add these API Keys -- or any keys for that matter - to Heroku by typing:
+
+	#copy and paste from your keys
+	heroku config:set YOUTUBE_ID=18273FKLDSJ
+	heroku config:set YOUTUBE_KEY=789fdjks1k2v092k 
+
+###Tidbits
+
+A. You can push a specific branch to write over heroku master with:
+
+	git push heroku <your branch>:master
+
+B. You can reset your (postgres) database with:
+
+	heroku pg:reset DATABASE_URL
 
 #Monday - 11/17:  
 #Phase 3:  Starting Rails
@@ -1713,13 +1816,15 @@ Moreover, all Javascript views default to the action name -- i.e.  `QuestionsCon
 	    end
 	  end	
 
+*Thanks to Tealeaf Academy for their detailed blog [post](http://www.gotealeaf.com/blog/the-detailed-guide-on-how-ajax-works-with-ruby-on-rails).*
+
 #Friday - 11/21:  
 #Phase 3:  Rails API Group Project:  CORS Headers
 
 *Written after Dev Bootcamp*
 *To be honest, this was kind of a wasted day at Dev Bootcamp. In addition to some disorganization, no one really worked on this project. That said, I think there are some important things to learn here.*
 
-If you're building a decoupled application with a server-side API, chances are you've run into a Cross-Origin Resource Sharing (CORS) problem. Chances are you've run into this problem: 
+If you're building a decoupled application with a server-side API, chances are you've run into a Cross-Origin Resource Sharing (CORS) problem. You probably saw this: 
 	
 	No ‘Access-Control-Allow-Origin’ header is present on the requested resource.
 
@@ -1768,16 +1873,32 @@ The server will respond to the above preflight request with the following:
 `Access-Control-Allow-Credentials` - If set to `true`, then cookies are enabled for CORS requests. Don't set this header request unless you are sure you want cookies to be included. 
 `Access-Control-Max-Age` - How long in seconds the client can cache the preflight response, so that it doesn't have to do so *every time*. Most people set it to 1728000 (or 20 days)
 
+###How This All Looks
+
+	class UsersController < ApplicationController
+	    def index
+	        set_cors_headers
+	    end
+
+	    def set_cors_headers
+	    headers['Access-Control-Allow-Origin'] = '*'
+	    headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS' #add PATCH?
+	    headers['Access-Control-Request-Method'] = '*'
+	    headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+	    end
+
+	end
+
 ###Credits
 
-Huge props to [Nicholas Zakas](http://www.nczonline.net/blog/2010/05/25/cross-domain-ajax-with-cross-origin-resource-sharing/) and [Yihang Ho](http://www.yihangho.com/rails-cross-origin-resource-sharing/). 
+Huge props to [Nicholas Zakas](http://www.nczonline.net/blog/2010/05/25/cross-domain-ajax-with-cross-origin-resource-sharing/), [Alexey Vasiliev](http://leopard.in.ua/2012/07/08/using-cors-with-rails/), and [Yihang Ho](http://www.yihangho.com/rails-cross-origin-resource-sharing/). 
 
 #Monday - 11/24:  
-#Phase 3:
+#Phase 3:  
 
 
 #Tuesday - 11/25:  
-#Phase 3:
+#Phase 3:  
 
 #Wednesday - 11/26:  
 #Phase 3:
