@@ -1893,8 +1893,79 @@ The server will respond to the above preflight request with the following:
 
 Huge props to [Nicholas Zakas](http://www.nczonline.net/blog/2010/05/25/cross-domain-ajax-with-cross-origin-resource-sharing/), [Alexey Vasiliev](http://leopard.in.ua/2012/07/08/using-cors-with-rails/), and [Yihang Ho](http://www.yihangho.com/rails-cross-origin-resource-sharing/). 
 
-#Monday - 11/24:  
-#Phase 3:  
+#Monday - 11/24:   
+#Phase 3:  Object-Oriented Javascript
+
+OOJS is hard. But there are design patterns that can help decode classes from methods, state from methods.
+
+###Constructor + Module Pattern
+For creating the state (variables) of a class, use the constructor pattern:
+
+	function List() {
+	  this.items = [];
+	  this.totalPrice = 0;
+	}
+
+Use the module pattern to define class methods. I like to encapsulate all the methods in one prototype declaration:
+
+	List.prototype = {
+	  addItem: function(itemName, itemPrice) {
+	    this.items.push(new Item(itemName, itemPrice));
+	  },
+	  calculateTotal: function () {
+	    this.totalPrice = 0;
+	    for (var index = 0; index < this.items.length; index++) {
+	      this.totalPrice += this.items[index].price;
+	    }
+	    return this.totalPrice;
+	  }
+	};
+
+###MVC & Modularity
+Just because it's Javascript, doesn't mean that you shouldn't keep your code modular. What this means is:  If you cut-and-paste your code from the model  into a different app, it should work. If you cut-and-paste code from the view into a new app, it should still work.
+
+Moreover, just like when designing any app, you should architect the problem first. Ask:
+
+1) What are your objects?
+2) What are the properties and methods?
+3) How do your objects interact with their respective DOM elements?
+
+From there (and with a lot of questioning) you should be able to write out the application like this:
+
+	// Controller
+	function Display() {
+	  this.groceryList = "#grocery_list";
+	  this.item = ".item";
+	  this.totalCost= "#total_cost";
+	};
+
+	Display.prototype = {
+	  appendItem: function() {
+	  },
+	  appendTotal: function() {
+	  }
+	}
+
+	// View
+	function Controller(List, Display) {
+	  this.List = List;
+	  this.Display = Display;
+	  this.node = null;
+	};
+
+	Controller.prototype.start = function () {
+	  makeItemDraggable: function() {},
+	  makeListDroppable: function() {}
+	}
+
+
+###Tidbits
+
+1.	Be sure to pluralize variables when the jQuery objects include a class (`.`) vs. an id (`#`):
+
+		this.groceryList = $("#grocery_list");
+		this.items = $(".item"); //"items" bc it's a class .item
+2.	
 
 
 #Tuesday - 11/25:  
