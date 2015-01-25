@@ -1899,7 +1899,7 @@ Huge props to [Nicholas Zakas](http://www.nczonline.net/blog/2010/05/25/cross-do
 OOJS is hard. But there are design patterns that can help decode classes from methods, state from methods.
 
 ###Constructor + Module Pattern
-For creating the state (variables) of a class, use the constructor pattern:
+For creating the state (variables) of a class, use a constructor:
 
 	function List() {
 	  this.items = [];
@@ -1958,15 +1958,42 @@ From there (and with a lot of questioning) you should be able to write out the a
 	  makeListDroppable: function() {}
 	}
 
-
 ###Tidbits
 
 1.	Be sure to pluralize variables when the jQuery objects include a class (`.`) vs. an id (`#`):
 
 		this.groceryList = $("#grocery_list");
 		this.items = $(".item"); //"items" bc it's a class .item
-2.	
+2.	To create a drag & drop interface, there are a few steps you need to take:
+	1.  Call draggable on all items. 
+	2.  Set the `helper` to `clone` so that you can actually see the item dragged around the DOM.
+	3.  `start` attribute to `.clone()` on the `$(event.target)`.
+	4. `scope` the attribute to a unique string.
+	
 
+			this.view.items.draggable({
+			      helper: "clone",
+			      scope: 'items',
+			      start: function( event, ui) {
+			        self.node = $(event.target).clone();
+			      }
+			    })
+
+	5. Set droppable to the same scope `items`. So you can drop draggable in this droppable. 
+	6. On `drop`, fill in the code need to attach the `draggable` to the `droppable` `groceryList`.
+
+			this.view.groceryList.droppable({
+			      scope: 'items',
+			      drop: function() {
+			        //puts in HTML of the item
+			        var item = self.view.appendItem(self.node);
+			        //pulls out HTML items, then puts them into objects
+			        self.list.addItem(item.name, item.price);
+			        var totalPrice = self.list.calculateTotal();
+			        self.view.appendTotal(totalPrice);
+			        console.log("end")
+			      }
+			    })
 
 #Tuesday - 11/25:  
 #Phase 3:  
