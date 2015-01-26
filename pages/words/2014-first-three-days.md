@@ -1996,10 +1996,96 @@ From there (and with a lot of questioning) you should be able to write out the a
 			    })
 
 #Tuesday - 11/25:  
-#Phase 3:  
+#Phase 3:  Lil' Twitter Part 1
+
+###Setting up the Asset Pipeline
+
+In `app/assets/javascripts/application.js`, delete `//= require_tree .` 
+
+If you don't, all Javascript assets will be loaded in alphabetical order. From there, you can `//= require` any asset you like. Even `vendor` or `lib` assets can be required without specifying the folder path. For example, `vendor/assets/handlebars` can be required with as `//= require handlebars`
+
+###Setting up Single Page App in Rails
+After setting up the controller to `render :json`, you can hit the Rails endpoint  (URL) with an AJAX request:
+
+	Controller.prototype = {
+	  initializeRiver: function() {
+	    var self = this;
+	    $.ajax({
+	      url: '/tweets/recent',
+	      type: 'GET',
+	      cache: false
+	    }).done( function(tweetsData){
+	      self.river.initialize(tweetsData);
+	      self.riverView.initialize(self.river.tweets);
+	    }).fail( function() {
+	        console.log("You failed at getting tweets")
+	    });
+	  }
+
+However, to convert the `tweetsData` into a objects you can (1) store and (2) manipulate on the front-end, you should convert it to tweet objects. We do this with the River model's `initialize` -- which instantiated new tweets:
+
+	function Tweet(options) {
+	  this.avatarUrl = options.avatar_url;
+	  this.content = options.content;
+	  this.createdAt = options.created_at;
+	  this.handle = options.handle;
+	  this.hashtagName = options.hashtag_names;
+	  this.id = options.id;
+	  this.updatedAt = options.updated_at;
+	  this.userName = options.username;
+	}
+
+###Handlebars
+
+#####Setting-up Handlebars
+Sometimes you may run into an error, like an `Uncaught Error`, when trying to use Handlebars. To prevent anything like that from happening, be sure to include load up your JS assets at the bottom of your page. 
+
+	...
+	</body>
+
+	  <%= javascript_include_tag "application" %>
+
+	</html>
+
+#####Making and Inserting a Template
+
+Usually, you want to create a template -- then insert your customized data into it. With Handlebars, it's pretty easy.
+
+1.	Create a template. Add handlebars with the corresponding property names (of the tweet).
+
+		<script id="tweet-template" type="text/x-handlebars-template">
+		  <li class="tweet">
+		    <img class="avatar" src="{{ avatarUrl }}" alt="">
+		    <div class="tweet-content">
+		      <p>
+		        <span class="full-name">{{ userName }}</span>
+		        <span class="username">{{ handle }}</span>
+		        <span class="timestamp">{{ createdAt }}</span>
+		      </p>
+		      <p>{{ content }}</p>
+		    </div>
+		  </li>
+		</script>
+
+2.	Turn the template into a string. Do this by calling `.html()` on the template.
+
+		  this.source         = $("#tweet-template").html();
+
+3.	Compile the string.
+
+		  this.tweetTemplate = Handlebars.compile(this.source);
+
+4. 	Insert the data into the template. Append the template to the correct HTML node.
+
+	      var context   = tweetsData[index];
+	      var tweetHTML = this.tweetTemplate(context);
+	      this.riverNode.append(tweetHTML);
 
 #Wednesday - 11/26:  
 #Phase 3:
+
+Long-polling
+infinite scroll
 
 
 #Thursday - 11/27:  
