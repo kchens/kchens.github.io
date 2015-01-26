@@ -2144,6 +2144,8 @@ Infinite scroll is a little hard to understand conceptually. But there are just 
 
 In the code above, we will `getNextBatch` of tweets if (1) the pixels already scrolled through and (2) browser's `$(window).height()` is greater than (3) the page's pixel height *minus 20 pixels*.
 
+For a visual understanding, visit Ben Nadel's blog [here](http://www.bennadel.com/blog/1801-creating-an-infinite-scroll-effect-with-jquery-and-coldfusion.htm).
+
 #Thursday - 11/27:  
 #Phase 3:  Devising Thanksgiving
 
