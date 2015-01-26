@@ -9,8 +9,6 @@ In 9 weeks, I am guaranteed some level of competency. Even if 50% of the materia
 
 Whereas, if I spend 9 weeks by myself, it's doubtful I'll learn *exactly* what I need to know to get a job as a full-stack engineer. 
 
-
-
 #Monday - 10/6
 #Encoding, Decoding, and Pairing
 
