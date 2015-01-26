@@ -2082,11 +2082,67 @@ Usually, you want to create a template -- then insert your customized data into 
 	      this.riverNode.append(tweetHTML);
 
 #Wednesday - 11/26:  
-#Phase 3:
+#Phase 3:  Lil' Twitter Part 2
 
-Long-polling
-infinite scroll
+What is the point of a single-page app if you (1) can't update your data automatically and you (2) can't scroll infinitely for new content.
 
+###Long-polling
+
+At it's core, long-polling is a fancy name for a continuous AJAX request every X period of time. That is, we have a `setTimeout` function that encapsulates an `ajax` request. Here, we're long-polling every 5 seconds:
+
+	setTimeout( function( 
+		$.ajax({...})
+		.done({...})
+		.fail({...});	) {}, 5000);
+
+Now, we can check for the most recent tweets in a few different ways. We could look at the timestamp of each record in the database, or we can look at the id. Below, we go with the latter -- by passing `largestId` to the server-side...
+
+	poll: function(){
+	   var self = this;
+	   setTimeout(function(){     				// key to long-polling
+	     console.log("polling now");
+	     console.log(Date.now());
+	     var largestId = self.river.largestId();		
+	     console.log(largestId);				// most recent tweet
+	    $.ajax({
+	      url: '/tweets/after/' + largestId,		// check database for more recent tweets
+	      type: 'GET',
+	      cache: false
+	    }).done( function(tweetsData){		// returns any, more recent tweets
+	      console.log(tweetsData);
+	      for ( var i = 0; i < tweetsData.length; i++ ){
+	        self.addTweet(tweetsData[i]);
+	      }
+	      self.poll();
+	    }).fail( function() {
+	        console.log("You failed at getting tweets")
+	    });
+	  }, 5000);},							// run the ajax request every 5 secs
+
+...our `TweetsController` takes the `largestId` and pulls all tweets greater than that id. Our AJAX request then adds the tweet to the page.
+
+	  def after
+	    last_id = params[:id]
+	    tweets = Tweet.where('id > ?', last_id)
+	    render json: tweets
+	  end
+
+###Infinite scroll
+
+Infinite scroll is a little hard to understand conceptually. But there are just three things to know:
+
+1.	`$(document).height()` is the height (*in pixels*) of the whole HTML page -- whether you can see the page part or not.
+2.	`$(window).height()` is the height of your browser window. That means, if you resize your browser window, the `$(window).height()` changes.
+3.	`$(window).scrollTop()` is how much of the page you've already scrolled. If you're at the bottom of the page, then the `scrollTop` includes the header, first paragraph, etc. `scrollTop` also changes with window resizing.
+
+		var nearToBottom = 20;
+		$(window).on("scroll", function() {
+		      if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) {
+		          self.getNextBatch();				// gets more tweets
+		        }
+		    })
+
+In the code above, we will `getNextBatch` of tweets if (1) the pixels already scrolled through and (2) browser's `$(window).height()` is greater than (3) the page's pixel height *minus 20 pixels*.
 
 #Thursday - 11/27:  
 #Phase 3:  Devising Thanksgiving
