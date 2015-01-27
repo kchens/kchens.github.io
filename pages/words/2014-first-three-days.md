@@ -181,20 +181,20 @@ If, say, a `BankAccount` class were a circle, how would other classes (or actual
 However, what happens if you want to make the information ***inaccessible*** to any object outside of the class? You could declare `private` like so:
 
 	class BankAccount
-	private
-	attr_reader :acct_number  ### see here
-	
-	public
-	attr_accessor :type, :customer_name
+		private
+		attr_reader :acct_number  ### see here
+		
+		public
+		attr_accessor :type, :customer_name
 
 	  
-	  def initialize(customer_name, type, acct_number)
-	    @customer_name = customer_name
-	    @type = type
-	    @acct_number = acct_number
-	  end
+		  def initialize(customer_name, type, acct_number)
+		    @customer_name = customer_name
+		    @type = type
+		    @acct_number = acct_number
+		  end
 
-	   ...
+		   ...
 	end
 
 However, this is unnecessary and tedious for most programs. Generally, you can leave the `attr_reader :acct_number` out entirely. Instead, use the instance variable denoted with `@` so that the instance methods can access the variable within the class.
@@ -548,7 +548,7 @@ INPUT IMAGE:  SQL-RUBY-MODEL
 
 It simply *maps* the Ruby classes and *objects* to *relations* in the Database. 
 
-More explicitly, Ruby classes are database tables. Instances of the class are table rows. And instance variables are table columns.
+More explicitly, Ruby classes are database tables. Instances of the class are table rows. And, instance variables are table columns.
 
 INPUT IMAGE:  ANIMATED-ORM
 
@@ -643,7 +643,7 @@ I'm just tired physically. Mentally, I think I can be pushed more. I've been lea
 
 
 #Thursday - 10/23:  
-#More ActiveRecord 
+#ActiveRecord Build, New, Shovel Operator
 
 Today's Highlight:  Really Understanding The Difference Between `.build` and `<<`
 
