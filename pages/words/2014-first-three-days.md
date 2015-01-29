@@ -2336,7 +2336,7 @@ As we're using Twilio, Twilio has a few custom XML elements -- `Response` and `S
 
 ###2. We got a pain rating graph!
 
-After adding a new route, I was able to feed the front-end of the app data to render into a nice graph like so:
+After adding a new route, our team was able to feed the front-end of the app data to render into a nice graph like so:
 
 ![](../../images/Pain_Chart.png)
 
@@ -2349,7 +2349,7 @@ We spent maybe another 6-7 hours creating the presentation, finalizing the struc
 
 [Here's what's in store.](http://prezi.com/g2kx3qdhe1gd/?utm_campaign=share&utm_medium=copy&rc=ex0share)
 
-#Friday - 12/4:  
+#Friday - 12/5:  
 #Phase 3:  I "Tai Chi While Drinking Chai Tea"
 
 Today, I graduated.
