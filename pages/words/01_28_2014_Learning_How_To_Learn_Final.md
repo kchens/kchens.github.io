@@ -23,16 +23,16 @@ Now, how do you do that effectively? Assuming that you have the [mindset](http:/
 
 I've always found it interesting as a high schooler or college student how summer was just playtime. For two to three months, no one expected you to be studying. Yet, when you came back to school the next year, you seemed to remember everything you learn the prior year -- and in many ways you were able to apply what you learned in a deeper and more meaningful way. 
 
-Take programming. This past summer, some events forced me to take a break from programming everyday or even every week. Yet, when I came back to my study, somehow I knew -- intuitively how to program. Neuroscientifically, there's a reason for this (which we'll get to). 
+Take programming. This past summer, some events forced me to take a break from programming everyday or even every week. Yet, when I came back to my study, somehow I knew (intuitively) how to program. Neuroscientifically, there's a reason for this (which we'll get to). 
 
 However, before I could have even taken a break, I still needed to *focus* to learn programming.
 
 #####Chunk Information
-Knowing what I know now, I would've started chunking and contextualizing information far more. As your brain needs something to chew on. But, your brain can't just chew on the raw ingredients. You have to make the dish -- in this case, a chunk.
+Knowing what I know now, I would've started chunking and contextualizing information far more. Your brain needs something to chew on, but your brain can't just chew on the raw ingredients. You have to make the dish -- in this case, a chunk.
 
 Neuroscientifically, a chunk is a set of neurons bound together through use and meaning. More intuitively, a chunk is a set of information that just kind of goes together -- like a good dish! 
 
-To create this dish, you need to really focus hard. You need to walk through the logic and make the connections between the new information. You have to keep working at it until you understand the *fundamental* idea of what you're studying.
+To create this dish, you need to focus hard. You need to walk through the logic and make the connections between the new information. You have to keep working at it until you understand the *fundamental* idea of what you're studying.
 
 It's going to be painful. I mean, you are literally working your brain out. But, if you can just focus on the *process* and not the end goal, you'll find that you enjoy it, like a good run or soccer game. 
 
@@ -54,7 +54,7 @@ Chunking is important to comprehension. But I think you have to *let go* of tryi
 If you work hard, here's how you play hard (so you can work better).
 
 #####Diffuse Mode
-Story goes that [Archimedes discovered the mathematical equation for volume](https://en.wikipedia.org/wiki/Eureka_%28word%29) taking a bath. Just as Archimedes *let go* of his focus on the problem (taking a step back from his using his prefrontal cortext), the back of his mind kept working on the problem. Academics call this "background" processing the Diffuse mode.
+Story goes that [Archimedes discovered the mathematical equation for volume](https://en.wikipedia.org/wiki/Eureka_%28word%29) while taking a bath. Just as Archimedes *let go* of his focus on the problem (taking a step back from his using his prefrontal cortext), the back of his mind kept working on the problem. Academics call this "background" processing the Diffuse mode.
 
 The Diffuse mode is when the brain starts making connections between neurons outside of those normally used for chunking. In this state, the brain can come up with new, creative, and "big picture" ways to thinking about a problem.
 
@@ -70,9 +70,9 @@ The most important reason is that you are **poisoning yourself if you don't slee
 If you don't get enough sleep, these poisons persist and muddle the clarity of your thoughts.
 
 ###Closing
-While this is not an exhaustive list of meta-techniques to improve your ability to learn, it is a starting point. Most likely, you're familiar with the importance of focus and hard work. But to evolve beyond a dog, you'll need use your focused mind to the best of its ability. So, chunk your information, contextualize it, and recall, recall, recall to consolidate what you've learned.
+While this is not an exhaustive list of techniques to improve your ability to learn, it is a starting point. Most likely, you're familiar with the importance of focus and hard work. But to evolve beyond a dog, you'll need use your focused mind to the best of its ability. So, chunk your information, contextualize it, and recall, recall, recall to consolidate what you've learned.
 
-But just as important. Save time for relaxation; don't work all the time. Watching a movie or getting a good night's sleep is, in many ways, also an important workout for your brain.
+But just as important. Save time for relaxation; don't work all the time. Watching a movie or getting a good night's sleep is, in many ways, also an important workout for your brain. Become a slightly-more lazy but super cunning fox.
 
 ###Appendix
 *All information comes from the Coursera course on "Learning How To Learn"*
