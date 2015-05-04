@@ -33,9 +33,9 @@ To prevent these attacks, you can respectively:
 4.	Change tokens every time a user logs out. 
 
 ######XSS vs. XSRF
-Cross-site scripting (XSS) enables attackers to inject client-side scripts into web pages that the user trusts. A XSS vulnerability may be used to let attackers bypass access controls such as the same-origin policy. 
+Cross-site scripting (XSS) enables attackers to inject client-side scripts into web pages that the user trusts (like through a form's comments). A XSS vulnerability may be used to let attackers bypass access controls such as the same-origin policy.
 
-Cross-site request forgery (XSRF), aka. one-click attack or session riding, exploits the trust a site has in a user's browser. The user might accidentally click on a script that instigates the XSRF attack.
+Cross-site request forgery (XSRF), or one-click attack, exploits the trust a site has in a user's browser. While authenticated on a website (like a bank website), the user might accidentally click on a script that instigates the XSRF attack. See more [here](http://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29).
 
 ###Implementing a cookie
 
@@ -48,4 +48,5 @@ Cross-site request forgery (XSRF), aka. one-click attack or session riding, expl
 
 #Thanks!
 [Rails Tutorial](http://www.railstutorial.org/book/log_in_log_out)
+[More on Security](http://crackstation.net/hashing-security.htm#normalhashing)
 
